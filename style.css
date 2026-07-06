@@ -27,9 +27,7 @@ html {
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  background:
-    linear-gradient(180deg, rgba(18, 16, 14, 0.18) 0%, rgba(18, 16, 14, 0.24) 100%),
-    linear-gradient(180deg, #f3e8de 0%, var(--bg) 100%);
+  background: #1a1a1a;
   color: var(--text);
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
@@ -183,12 +181,7 @@ a.button {
 }
 
 .page::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 55%, rgba(255,255,255,0.1) 100%);
+  content: none;
 }
 
 .hero {
@@ -206,11 +199,7 @@ a.button {
 }
 
 .hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%);
-  z-index: -1;
+  content: none;
 }
 
 .hero__content {
