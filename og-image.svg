@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3e8de"/>
+      <stop offset="100%" style="stop-color:#fdf8ee"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- Фон -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Декоративное сердце -->
+  <path d="M600 420 C450 300 300 250 300 180 C300 120 360 80 420 80 C480 80 540 120 600 180 C660 120 720 80 780 80 C840 80 900 120 900 180 C900 250 750 300 600 420Z" 
+        fill="#f4c5cf" opacity="0.3" filter="url(#shadow)"/>
+  
+  <!-- Текст -->
+  <text x="600" y="280" font-family="Georgia, serif" font-size="48" fill="#333" text-anchor="middle" font-weight="bold">
+    Приглашение на свадьбу
+  </text>
+  <text x="600" y="360" font-family="Georgia, serif" font-size="36" fill="#666" text-anchor="middle">
+    Никиты и Маргариты
+  </text>
+  <text x="600" y="440" font-family="Georgia, serif" font-size="28" fill="#888" text-anchor="middle">
+    24 июля 2026
+  </text>
+</svg>
