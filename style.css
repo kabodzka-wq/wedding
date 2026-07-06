@@ -64,10 +64,10 @@ a.button {
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0;
-  transform: scale(1.04);
+  transform: scale(1.08);
   filter: blur(9px) saturate(1.05) brightness(0.9);
-  transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: opacity, filter;
+  transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform, filter;
 }
 
 .background-photo--1 {
@@ -92,6 +92,7 @@ a.button {
 
 .background-photo.is-active {
   opacity: 1;
+  transform: scale(1);
 }
 
 .background-photo::after {
@@ -147,6 +148,7 @@ a.button {
   color: #f7efe8;
   isolation: isolate;
   width: 100%;
+  min-height: 100vh;
 }
 
 .hero::after {

@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.intersectionRatio > 0.5) {
+          if (entry.intersectionRatio > 0.7) {
             entry.target.classList.add('is-visible');
           } else {
             entry.target.classList.remove('is-visible');
