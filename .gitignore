@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Build / generated
+node_modules/
+.DS_Store
+
+# System files
+Thumbs.db
