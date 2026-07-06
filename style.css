@@ -1,16 +1,16 @@
 :root {
   color-scheme: light;
-  --bg: #fbfaf4;
-  --bg-strong: #f9f8ef;
-  --surface: rgba(255, 255, 255, 0.72);
-  --surface-strong: rgba(255, 255, 255, 0.9);
-  --text: #222724;
-  --muted: #707a66;
-  --accent: #78956f;
-  --accent-strong: #51634e;
-  --accent-soft: rgba(120, 149, 111, 0.14);
-  --border: rgba(113, 130, 103, 0.12);
-  --shadow: 0 24px 70px rgba(38, 47, 39, 0.12);
+  --bg: #fdf8ee;
+  --bg-strong: #fbf4e8;
+  --surface: rgba(255, 255, 255, 0.44);
+  --surface-strong: rgba(255, 255, 255, 0.72);
+  --text: #212724;
+  --muted: #6f6a72;
+  --accent: #c87b9a;
+  --accent-strong: #9d3f5b;
+  --accent-soft: rgba(200, 123, 154, 0.18);
+  --border: rgba(177, 96, 126, 0.18);
+  --shadow: 0 24px 60px rgba(40, 48, 37, 0.12);
   --radius-xl: 34px;
   --radius-lg: 24px;
   --radius-md: 18px;
@@ -29,8 +29,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(122, 147, 107, 0.12) 0%, transparent 24%),
-    linear-gradient(180deg, #fbfaf4 0%, var(--bg) 100%);
+    radial-gradient(circle at top left, rgba(200, 123, 154, 0.12) 0%, transparent 24%),
+    linear-gradient(180deg, #fdf8ef 0%, var(--bg) 100%);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
@@ -62,9 +62,10 @@ a.button {
   place-items: center;
   padding: 28px;
   background:
-    linear-gradient(180deg, rgba(250, 249, 243, 0.96) 0%, rgba(250, 249, 243, 0.68) 100%),
-    url("images/photo-2.jpg") center/cover no-repeat;
-  color: #fffef8;
+    radial-gradient(circle at top left, rgba(222, 236, 215, 0.28) 0%, transparent 28%),
+    radial-gradient(circle at 80% 20%, rgba(244, 238, 227, 0.9) 0%, transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(249, 245, 237, 1) 45%, rgba(241, 239, 230, 1) 100%);
+  color: var(--text);
   isolation: isolate;
 }
 
@@ -72,8 +73,8 @@ a.button {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.2) 35%, rgba(119, 144, 104, 0.18) 100%);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.05) 55%);
+  filter: blur(18px);
   z-index: -1;
 }
 
@@ -81,12 +82,12 @@ a.button {
   width: min(100%, 740px);
   text-align: center;
   padding: clamp(2rem, 5vw, 3.5rem);
-  border: 1px solid rgba(120, 149, 111, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.46);
   border-radius: var(--radius-xl);
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 18px 56px rgba(32, 40, 33, 0.14);
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  box-shadow: 0 18px 56px rgba(32, 40, 33, 0.12);
 }
 
 .eyebrow {
@@ -94,7 +95,7 @@ a.button {
   text-transform: uppercase;
   letter-spacing: 0.34em;
   font-size: 0.8rem;
-  color: rgba(82, 100, 78, 0.85);
+  color: var(--accent-strong);
 }
 
 .hero h1,
@@ -119,14 +120,14 @@ a.button {
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(248, 242, 232, 0.9);
+  color: var(--accent-strong);
 }
 
 .hero__copy {
   margin: 0 auto 1.8rem;
   max-width: 560px;
   font-size: clamp(1rem, 2.2vw, 1.12rem);
-  color: rgba(248, 242, 232, 0.92);
+  color: rgba(56, 75, 54, 0.92);
 }
 
 .button {
@@ -146,15 +147,15 @@ a.button {
 }
 
 .button--primary {
-  background: rgba(120, 148, 108, 0.14);
+  background: rgba(200, 123, 154, 0.18);
   color: var(--accent-strong);
-  border-color: rgba(120, 148, 108, 0.28);
+  border-color: rgba(200, 123, 154, 0.32);
 }
 
 .button--secondary {
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.84);
   color: var(--accent-strong);
-  border-color: rgba(113, 130, 103, 0.18);
+  border-color: rgba(177, 96, 126, 0.18);
 }
 
 .button__icon {
@@ -172,11 +173,11 @@ main {
   margin: 0 auto 32px;
   padding: clamp(1.5rem, 3.4vw, 2.4rem);
   border-radius: var(--radius-xl);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(251, 250, 244, 0.72) 100%);
-  border: 1px solid rgba(121, 143, 104, 0.14);
-  box-shadow: 0 20px 60px rgba(54, 64, 53, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.36);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow: 0 24px 72px rgba(54, 64, 53, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
 }
 
 .section--intro {
@@ -214,9 +215,9 @@ main {
 .intro-card {
   padding: 1.25rem 1.3rem;
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(245, 250, 238, 0.94) 100%);
-  border: 1px solid rgba(121, 143, 104, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid rgba(132, 154, 119, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
 }
 
 .intro-card p {
@@ -224,25 +225,12 @@ main {
   color: var(--text);
 }
 
-.hero {
-  position: relative;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: 28px;
-  background:
-    linear-gradient(180deg, rgba(255, 250, 244, 0.18) 0%, rgba(255, 250, 244, 0.18) 100%),
-    url("images/photo-1.jpg") center 56%/cover no-repeat;
-  color: #faf6ee;
-  isolation: isolate;
-}
-
 .section--image {
   min-height: clamp(320px, 34vw, 460px);
-  background: linear-gradient(180deg, rgba(255, 252, 247, 0.74) 0%, rgba(255, 252, 247, 0.45) 100%),
-    url("images/photo-2.jpg") center 64%/cover no-repeat;
+  background: url("images/photo-2.jpg") center top/cover no-repeat;
+  background-position: center 75%;
   border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.62);
   box-shadow: 0 18px 48px rgba(54, 64, 53, 0.08);
 }
 
@@ -368,7 +356,7 @@ main {
   text-align: center;
   padding: clamp(2rem, 4vw, 3.2rem);
   background:
-    linear-gradient(120deg, rgba(245, 239, 232, 0.82) 0%, rgba(239, 229, 216, 0.78) 100%),
+    linear-gradient(120deg, rgba(255, 245, 247, 0.96) 0%, rgba(249, 235, 240, 0.9) 100%),
     url("images/hero-scene.svg") center/cover no-repeat;
 }
 
