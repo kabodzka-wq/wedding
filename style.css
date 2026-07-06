@@ -90,6 +90,60 @@ a.button {
   background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/photo-5.jpg");
 }
 
+.background-photo--6 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/photo-6.jpg");
+}
+
+.background-photo--7 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/photo-7.jpg");
+}
+
+.background-photo--8 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/photo-8.jpg");
+}
+
+.background-photo--9 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/photo-9.jpg");
+}
+
+.background-photo--10 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/photo-10.jpg");
+}
+
+.background-photo-landscape {
+  display: none;
+}
+
+@media (orientation: landscape) {
+  .background-photo {
+    display: none;
+  }
+
+  .background-photo-landscape {
+    display: block;
+  }
+}
+
+.background-photo-landscape--1 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/landphoto-1.jpg");
+}
+
+.background-photo-landscape--2 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/landphoto-2.jpg");
+}
+
+.background-photo-landscape--3 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/landphoto-3.jpg");
+}
+
+.background-photo-landscape--4 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/landphoto-4.jpg");
+}
+
+.background-photo-landscape--5 {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%), url("images/landphoto-5.jpg");
+}
+
 .background-photo.is-active {
   opacity: 1;
   transform: scale(1);
@@ -413,7 +467,7 @@ a.button {
 .section--closing {
   display: block;
   text-align: left;
-  padding: clamp(1.6rem, 3.2vw, 2.6rem);
+  padding: clamp(2.2rem, 5vw, 3.8rem);
 }
 
 .signoff {

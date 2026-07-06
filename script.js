@@ -1,27 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const slides = Array.from(document.querySelectorAll('.story-slide'));
   const photos = Array.from(document.querySelectorAll('.background-photo'));
+  const landscapePhotos = Array.from(document.querySelectorAll('.background-photo-landscape'));
 
-  const updateBackground = () => {
-    if (!photos.length || !slides.length) return;
+  let currentPhotoIndex = 0;
+  let currentLandscapeIndex = 0;
+  let autoTimeout;
 
-    let closestIndex = 0;
-    let closestDistance = Infinity;
+  const activatePhoto = (index) => {
+    photos.forEach((photo, i) => {
+      photo.classList.toggle('is-active', i === index);
+      photo.style.opacity = i === index ? '1' : '0';
+    });
 
-    slides.forEach((slide, index) => {
-      const rect = slide.getBoundingClientRect();
-      const centerDistance = Math.abs(rect.top + rect.height / 2 - window.innerHeight / 2);
+    if (landscapePhotos.length) {
+      landscapePhotos.forEach((photo, i) => {
+        photo.classList.toggle('is-active', i === currentLandscapeIndex);
+        photo.style.opacity = i === currentLandscapeIndex ? '1' : '0';
+      });
+    }
+  };
 
-      if (centerDistance < closestDistance) {
-        closestDistance = centerDistance;
-        closestIndex = index;
+  const scheduleNextAuto = () => {
+    clearTimeout(autoTimeout);
+    autoTimeout = setTimeout(() => {
+      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+      if (landscapePhotos.length) {
+        currentLandscapeIndex = (currentLandscapeIndex + 1) % landscapePhotos.length;
       }
-    });
-
-    photos.forEach((photo, index) => {
-      photo.classList.toggle('is-active', index === closestIndex);
-      photo.style.opacity = index === closestIndex ? '1' : '0';
-    });
+      activatePhoto(currentPhotoIndex);
+      scheduleNextAuto();
+    }, 4000);
   };
 
   const countdown = document.querySelector('[data-target]');
@@ -80,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  window.addEventListener('scroll', updateBackground, { passive: true });
-  window.addEventListener('resize', updateBackground);
-  updateBackground();
+  // Запускаем автоматическую смену фонов каждые 4 секунды
+  scheduleNextAuto();
+  activatePhoto(0);
 });
