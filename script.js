@@ -1,3 +1,7 @@
+//
+// Свадебное приглашение Никиты и Маргариты
+// Автор кода: nkv
+//
 document.addEventListener('DOMContentLoaded', () => {
   const photos = Array.from(document.querySelectorAll('.background-photo'));
   const landscapePhotos = Array.from(document.querySelectorAll('.background-photo-landscape'));
