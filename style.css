@@ -557,9 +557,18 @@ a.button {
   align-items: center;
   gap: 0.5rem;
   opacity: 0;
-  -webkit-animation: heroFadeIn 0.8s ease forwards 2s;
-  animation: heroFadeIn 0.8s ease forwards 2s;
   pointer-events: none;
+  transition: opacity 0.6s ease, -webkit-transform 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-hint.is-visible {
+  opacity: 1;
+}
+
+.scroll-hint.is-hidden {
+  opacity: 0;
+  -webkit-transform: translateX(-50%) translateY(12px);
+  transform: translateX(-50%) translateY(12px);
 }
 
 .scroll-hint__text {

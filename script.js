@@ -108,11 +108,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // };
 
   // Объединённый scroll handler
+  const scrollHint = document.querySelector('.scroll-hint');
+  if (scrollHint) {
+    setTimeout(() => scrollHint.classList.add('is-visible'), 2000);
+  }
   let scrollTicking = false;
   window.addEventListener('scroll', () => {
     if (!scrollTicking) {
       requestAnimationFrame(() => {
         // updateParallax(); // временно отключён
+
+        if (scrollHint && window.scrollY > 10) {
+          scrollHint.classList.add('is-hidden');
+        }
 
         if (backToTop) {
           if (window.scrollY > 400) {
