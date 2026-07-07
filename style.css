@@ -300,6 +300,8 @@ a.button {
   left: 0;
   z-index: -3;
   pointer-events: none;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .background-photo {
@@ -410,6 +412,7 @@ a.button {
 .page {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   isolation: isolate;
 }
 
@@ -444,6 +447,7 @@ a.button {
   isolation: isolate;
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .hero__content {
@@ -926,6 +930,29 @@ a.button {
 
   .countdown {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Очень вытянутые экраны (20:9, 21:9) */
+@media (min-aspect-ratio: 20/9) {
+  .hero {
+    padding: 12px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 9vw, 4.8rem);
+  }
+
+  .hero__date {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+  }
+
+  .section {
+    padding: 1.5rem 1rem;
+  }
+
+  .scroll-hint {
+    bottom: 1.5rem;
   }
 }
 
