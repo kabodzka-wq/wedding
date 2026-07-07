@@ -549,6 +549,7 @@ a.button {
   align-items: center;
   gap: 0.5rem;
   opacity: 0;
+  -webkit-animation: heroFadeIn 0.8s ease forwards 2s;
   animation: heroFadeIn 0.8s ease forwards 2s;
   pointer-events: none;
 }
@@ -582,13 +583,13 @@ a.button {
 }
 
 @-webkit-keyframes scrollLineDrop {
-  0% { -webkit-transform: translateY(-12px); transform: translateY(-12px); opacity: 0; }
+  0% { -webkit-transform: translateY(-14px); opacity: 0; }
   40% { opacity: 1; }
-  100% { -webkit-transform: translateY(40px); transform: translateY(40px); opacity: 0; }
+  100% { -webkit-transform: translateY(40px); opacity: 0; }
 }
 
 @keyframes scrollLineDrop {
-  0% { -webkit-transform: translateY(-12px); transform: translateY(-12px); opacity: 0; }
+  0% { -webkit-transform: translateY(-14px); transform: translateY(-14px); opacity: 0; }
   40% { opacity: 1; }
   100% { -webkit-transform: translateY(40px); transform: translateY(40px); opacity: 0; }
 }
