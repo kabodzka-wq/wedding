@@ -265,6 +265,18 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: #1a1a1a;
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-overflow-scrolling: touch;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  overflow-x: hidden;
 }
 
 body {
@@ -294,14 +306,16 @@ a.button {
 
 .background-photos {
   position: fixed;
-  top: 0;
+  top: -50px;
   right: 0;
-  bottom: 0;
+  bottom: -50px;
   left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
   z-index: -3;
   pointer-events: none;
-  min-height: 100vh;
-  min-height: 100dvh;
+  overflow: hidden;
 }
 
 .background-photo {
@@ -310,11 +324,16 @@ a.button {
   right: 0;
   bottom: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0;
-  transform: scale(1.08);  filter: blur(2px) saturate(1.05) brightness(0.9);
+  -webkit-transform: scale(1.08);
+  transform: scale(1.08);
+  -webkit-filter: blur(2px) saturate(1.05) brightness(0.9);
+  filter: blur(2px) saturate(1.05) brightness(0.9);
   transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -405,6 +424,8 @@ a.button {
   right: 0;
   bottom: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, rgba(10, 10, 10, 0.18) 0%, rgba(10, 10, 10, 0.34) 100%);
   pointer-events: none;
 }
@@ -953,6 +974,19 @@ a.button {
 
   .scroll-hint {
     bottom: 1.5rem;
+  }
+}
+
+/* iOS Safari — дополнительный запас для адресной строки */
+@supports (-webkit-touch-callout: none) {
+  .background-photos {
+    top: -100px;
+    bottom: -100px;
+  }
+
+  .hero {
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
   }
 }
 
