@@ -88,7 +88,7 @@
 
 /* Прелоадер */
 .preloader {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
@@ -98,13 +98,12 @@
   align-items: center;
   justify-content: center;
   background: #1a1a1a;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
 }
 
 .preloader.is-hidden {
   opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
 }
 
 .preloader__monogram {
@@ -155,7 +154,7 @@
 
 /* Кнопка «Наверх» */
 .back-to-top {
-  position: fixed;
+  position: absolute;
   bottom: 1.5rem;
   right: 1.5rem;
   z-index: 100;
@@ -176,11 +175,13 @@
   -webkit-transform: translateY(10px);
   transform: translateY(10px);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease, background-color 0.3s ease;
+  pointer-events: none;
 }
 
 .back-to-top.is-visible {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   -webkit-transform: translateY(0);
   transform: translateY(0);
 }
@@ -201,7 +202,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none;
   z-index: 1;
 }
@@ -264,8 +265,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
+  touch-action: manipulation;
 }
 
 body {
@@ -274,9 +275,10 @@ body {
   background: #1a1a1a;
   color: var(--text);
   line-height: 1.6;
-  -webkit-overflow-scrolling: touch;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 4px 24px rgba(0, 0, 0, 0.5);
   overflow-x: hidden;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -419,11 +421,14 @@ a.button {
   min-height: 100vh;
   min-height: 100dvh;
   isolation: isolate;
+  overflow-x: hidden;
+  touch-action: pan-y;
 }
 
 .story-track {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .story-slide {
@@ -434,6 +439,7 @@ a.button {
   padding: 24px;
   position: relative;
   width: 100%;
+  overflow: visible;
 }
 
 .story-slide .section {
@@ -453,6 +459,7 @@ a.button {
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
+  overflow: visible;
 }
 
 .hero__content {
@@ -460,6 +467,7 @@ a.button {
   text-align: center;
   padding: clamp(2.2rem, 5vw, 3.8rem);
   border-radius: var(--radius-xl);
+  overflow: visible;
 }
 
 .eyebrow {
@@ -649,7 +657,6 @@ a.button {
   border-radius: var(--radius-xl);
   position: relative;
   z-index: 2;
-  overflow: hidden;
 }
 
 .section--intro {
@@ -659,6 +666,7 @@ a.button {
   position: relative;
   z-index: 2;
   isolation: isolate;
+  overflow: visible;
 }
 
 .section--intro > * {
@@ -827,6 +835,7 @@ a.button {
   width: min(100%, var(--max-width));
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .slide-inner > * + * {
@@ -850,6 +859,7 @@ a.button {
   margin-left: auto;
   margin-right: auto;
   max-width: 760px;
+  overflow: visible;
 }
 
 .signoff {
@@ -950,10 +960,6 @@ a.button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
   *,
   *::before,
   *::after {

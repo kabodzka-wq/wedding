@@ -9,8 +9,10 @@ if ('scrollRestoration' in history) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Прокручиваем вверх при загрузке
+  // Прокручиваем вверх при загрузке (мгновенно, без smooth)
+  document.documentElement.style.scrollBehavior = 'auto';
   window.scrollTo(0, 0);
+  document.documentElement.style.scrollBehavior = '';
 
   // Фикс высоты фонового контейнера для мобильных браузеров
   const setBackgroundHeight = () => {
