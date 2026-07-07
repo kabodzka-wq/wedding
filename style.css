@@ -31,6 +31,52 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Локальный шрифт Inter — похож на SF Pro, с поддержкой кириллицы */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('fonts/Inter-CyrillicExt.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('fonts/Inter-Cyrillic-400.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: block;
+  src: url('fonts/Inter-CyrillicExt.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: block;
+  src: url('fonts/Inter-Cyrillic-500plus.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: block;
+  src: url('fonts/Inter-Latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   color-scheme: light;
   --text: #fdf7f2;
@@ -38,6 +84,165 @@
   --radius-xl: 36px;
   --radius-lg: 24px;
   --max-width: 1180px;
+}
+
+/* Прелоадер */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader__monogram {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: #f7dce2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  animation: preloaderPulse 1.8s ease-in-out infinite;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.preloader__monogram.is-changing {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.preloader__date {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #f7dce2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  animation: preloaderPulse 1.8s ease-in-out infinite;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.preloader__date.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.preloader__amp {
+  font-size: 0.7em;
+  color: rgba(244, 197, 207, 0.7);
+  margin: 0 0.1em;
+}
+
+@keyframes preloaderPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Кнопка «Наверх» */
+.back-to-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Лепестки */
+.petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: -20px;
+  background: rgba(244, 197, 207, 0.6);
+  border-radius: 0 100% 0 100%;
+  animation: petalFall linear infinite;
+}
+
+.petal--1 { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+.petal--2 { left: 25%; animation-duration: 14s; animation-delay: 2s; }
+.petal--3 { left: 40%; animation-duration: 10s; animation-delay: 4s; }
+.petal--4 { left: 55%; animation-duration: 16s; animation-delay: 1s; }
+.petal--5 { left: 70%; animation-duration: 11s; animation-delay: 3s; }
+.petal--6 { left: 85%; animation-duration: 13s; animation-delay: 5s; }
+.petal--7 { left: 15%; animation-duration: 15s; animation-delay: 6s; width: 8px; height: 8px; }
+.petal--8 { left: 60%; animation-duration: 12s; animation-delay: 7s; width: 10px; height: 10px; }
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Разделитель */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 24px;
+  width: 100%;
+}
+
+.divider svg {
+  width: 200px;
+  height: 24px;
+  opacity: 0.7;
 }
 
 * {
@@ -50,11 +255,12 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   background: #1a1a1a;
   color: var(--text);
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 img {
@@ -93,43 +299,43 @@ a.button {
 }
 
 .background-photo--1 {
-  background-image: url("images/photo-1.jpg");
+  background-image: url("images/photo-1.webp");
 }
 
 .background-photo--2 {
-  background-image: url("images/photo-2.jpg");
+  background-image: url("images/photo-2.webp");
 }
 
 .background-photo--3 {
-  background-image: url("images/photo-3.jpg");
+  background-image: url("images/photo-3.webp");
 }
 
 .background-photo--4 {
-  background-image: url("images/photo-4.jpg");
+  background-image: url("images/photo-4.webp");
 }
 
 .background-photo--5 {
-  background-image: url("images/photo-5.jpg");
+  background-image: url("images/photo-5.webp");
 }
 
 .background-photo--6 {
-  background-image: url("images/photo-6.jpg");
+  background-image: url("images/photo-6.webp");
 }
 
 .background-photo--7 {
-  background-image: url("images/photo-7.jpg");
+  background-image: url("images/photo-7.webp");
 }
 
 .background-photo--8 {
-  background-image: url("images/photo-8.jpg");
+  background-image: url("images/photo-8.webp");
 }
 
 .background-photo--9 {
-  background-image: url("images/photo-9.jpg");
+  background-image: url("images/photo-9.webp");
 }
 
 .background-photo--10 {
-  background-image: url("images/photo-10.jpg");
+  background-image: url("images/photo-10.webp");
 }
 
 .background-photo-landscape {
@@ -147,23 +353,23 @@ a.button {
 }
 
 .background-photo-landscape--1 {
-  background-image: url("images/landphoto-1.jpg");
+  background-image: url("images/landphoto-1.webp");
 }
 
 .background-photo-landscape--2 {
-  background-image: url("images/landphoto-2.jpg");
+  background-image: url("images/landphoto-2.webp");
 }
 
 .background-photo-landscape--3 {
-  background-image: url("images/landphoto-3.jpg");
+  background-image: url("images/landphoto-3.webp");
 }
 
 .background-photo-landscape--4 {
-  background-image: url("images/landphoto-4.jpg");
+  background-image: url("images/landphoto-4.webp");
 }
 
 .background-photo-landscape--5 {
-  background-image: url("images/landphoto-5.jpg");
+  background-image: url("images/landphoto-5.webp");
 }
 
 .background-photo.is-active {
@@ -235,12 +441,19 @@ a.button {
   color: #fff4ef;
 }
 
+.eyebrow--script {
+  font-family: 'Great Vibes', cursive;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
 .hero h1,
 .hero__date,
 .section__title,
 .section__lead,
 .signoff {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
@@ -252,6 +465,50 @@ a.button {
   font-weight: 500;
   letter-spacing: 0.06em;
   color: #fdf5eb;
+}
+
+.hero h1 .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: wordRise 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.hero h1 .word:nth-child(1) { animation-delay: 0.3s; }
+.hero h1 .word:nth-child(2) { animation-delay: 0.6s; }
+.hero h1 .word:nth-child(3) { animation-delay: 0.9s; }
+
+@keyframes wordRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero__date,
+.hero__copy {
+  opacity: 0;
+  animation: heroFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.hero__date {
+  animation-delay: 1.2s;
+}
+
+.hero__copy {
+  animation-delay: 1.5s;
+}
+
+.hero .eyebrow {
+  opacity: 0;
+  animation: heroFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 0.1s;
+}
+
+@keyframes heroFadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .hero__date {
@@ -377,6 +634,7 @@ a.button {
   text-align: center;
   background: rgba(255, 255, 255, 0.04);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  perspective: 200px;
 }
 
 .countdown__value {
@@ -385,6 +643,54 @@ a.button {
   font-weight: 600;
   color: #ffffff;
   line-height: 1;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.countdown__value.is-flipping {
+  transform: rotateX(90deg);
+  opacity: 0;
+}
+
+/* Эффект «День свадьбы» */
+.countdown.is-celebrating {
+  display: none;
+}
+
+.countdown-celebration {
+  display: none;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 1.2rem;
+}
+
+.countdown-celebration.is-visible {
+  display: block;
+  animation: celebrationRise 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.countdown-celebration__title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text-strong);
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.countdown-celebration__text {
+  font-size: 1rem;
+  color: rgba(255, 250, 245, 0.94);
+  margin: 0;
+}
+
+@keyframes celebrationRise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .countdown__label {
@@ -501,5 +807,14 @@ a.button {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+
+  .hero h1 .word,
+  .hero__date,
+  .hero__copy,
+  .hero .eyebrow {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }

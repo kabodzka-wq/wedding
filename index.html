@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Свадебное приглашение Никиты и Маргариты на 24 июля 2026 года">
+  <meta name="theme-color" content="#1a1a1a">
   <title>Приглашение на свадьбу</title>
   
   <!-- Open Graph / Telegram / Viber / WhatsApp -->
@@ -30,9 +31,23 @@
   <link rel="icon" type="image/png" sizes="32x32" href="icons/webicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/webicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  
+  <!-- Предзагрузка шрифтов -->
+  <link rel="preload" href="fonts/GreatVibes-Cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/Inter-Cyrillic-400.woff2" as="font" type="font/woff2" crossorigin>
+  
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Прелоадер -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__monogram" id="preloaderMonogram">Н<span class="preloader__amp">&amp;</span>М</div>
+  </div>
+
+  <!-- Кнопка «Наверх» -->
+  <button class="back-to-top" id="backToTop" aria-label="Наверх">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
   <div class="background-photos" aria-hidden="true">
     <div class="background-photo background-photo--1 is-active"></div>
     <div class="background-photo background-photo--2"></div>
@@ -55,6 +70,16 @@
   <div class="page">
     <div class="story-track">
       <section class="hero story-slide" aria-label="Свадебное приглашение">
+        <div class="petals" aria-hidden="true">
+          <span class="petal petal--1"></span>
+          <span class="petal petal--2"></span>
+          <span class="petal petal--3"></span>
+          <span class="petal petal--4"></span>
+          <span class="petal petal--5"></span>
+          <span class="petal petal--6"></span>
+          <span class="petal petal--7"></span>
+          <span class="petal petal--8"></span>
+        </div>
         <div class="hero__content reveal">
           <p class="eyebrow">Приглашение на свадьбу</p>
           <h1>Никиты и Маргариты</h1>
@@ -65,7 +90,6 @@
       <section class="section section--intro story-slide reveal" id="invite">
         <div class="intro-grid">
           <div>
-            <p class="eyebrow">Личное приглашение</p>
             <h2 class="section__title">Мы очень ждем вас рядом с нами</h2>
             <p class="section__lead">Этот день для нас — не просто дата в календаре. Это момент, когда мы хотим быть в кругу самых близких людей, и с особым теплом приглашаем вас разделить его вместе с нами.</p>
             <p class="section__copy">Мы выбрали атмосферу, в которой будет легко и спокойно — без лишней суеты, с вниманием к каждому и настоящим ощущением праздника. Нам важно, чтобы в этот день рядом были те, кто дорог нам больше всего.</p>
@@ -76,10 +100,13 @@
         </div>
       </section>
 
+      <div class="divider" aria-hidden="true">
+        <svg viewBox="0 0 200 24" fill="none"><path d="M0 12h70M130 12h70" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><circle cx="100" cy="12" r="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><path d="M96 12c2-3 4-3 8 0c-4 3-6 3-8 0z" fill="rgba(255,255,255,0.15)"/></svg>
+      </div>
+
       <section class="story-slide reveal">
         <div class="slide-inner">
           <div class="section">
-            <p class="eyebrow">Таймер</p>
             <h2 class="section__title">До нашего дня осталось</h2>
             <div class="countdown" data-target="2026-07-24T14:00:00+03:00" aria-label="Обратный отсчет до свадьбы">
               <div class="countdown__item"><span class="countdown__value" data-value>00</span><span class="countdown__label">Дней</span></div>
@@ -87,9 +114,13 @@
               <div class="countdown__item"><span class="countdown__value" data-value>00</span><span class="countdown__label">Минут</span></div>
               <div class="countdown__item"><span class="countdown__value" data-value>00</span><span class="countdown__label">Секунд</span></div>
             </div>
+            <div class="countdown-celebration" id="countdownCelebration">
+              <p class="countdown-celebration__title">Сегодня наш день!</p>
+              <p class="countdown-celebration__text">Этот день настал — мы ждём вас!</p>
+            </div>
           </div>
           <div class="section">
-            <p class="eyebrow">Ждем вас</p>
+            <p class="eyebrow eyebrow--script">Ждем вас</p>
             <p class="details-text"><strong>24 июля 2026</strong></p>
             <p class="details-text"><strong>Время встречи</strong> — 14:00</p>
             <p class="details-text"><strong>Время церемонии</strong> — 14:50</p>
@@ -102,18 +133,27 @@
         </div>
       </section>
 
+      <div class="divider" aria-hidden="true">
+        <svg viewBox="0 0 200 24" fill="none"><path d="M0 12h70M130 12h70" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><circle cx="100" cy="12" r="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><path d="M96 12c2-3 4-3 8 0c-4 3-6 3-8 0z" fill="rgba(255,255,255,0.15)"/></svg>
+      </div>
+
       <section class="story-slide reveal">
         <div class="slide-inner">
           <div class="section">
+            <p class="eyebrow eyebrow--script">О вечере</p>
             <p class="section__lead">После церемонии регистрации брака мы отправимся в усадьбу «Прилукоморье», где вместе отпразднуем рождение нашей семьи. Нас ждёт тёплый праздничный вечер: уютное застолье, множество интересных активностей, трогательные свадебные обряды, искренние улыбки и моменты, которые останутся в памяти на долгие годы. А завершится этот день красивым и незабываемым финалом, который мы разделим вместе с самыми близкими.</p>
           </div>
         </div>
       </section>
 
+      <div class="divider" aria-hidden="true">
+        <svg viewBox="0 0 200 24" fill="none"><path d="M0 12h70M130 12h70" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><circle cx="100" cy="12" r="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><path d="M96 12c2-3 4-3 8 0c-4 3-6 3-8 0z" fill="rgba(255,255,255,0.15)"/></svg>
+      </div>
+
       <section class="story-slide reveal">
         <div class="slide-inner">
           <div class="section">
-            <p class="eyebrow">Пожелания</p>
+            <p class="eyebrow eyebrow--script">Пожелания</p>
             <div class="wishes-stack">
               <p>Цветы невесте не обязательны</p>
               <p>Невесте будет особенно приятно получить подарочный сертификат на косметику — например, в магазины «Золотое Яблоко» или «Крафт».</p>

@@ -36,11 +36,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4000);
   };
 
+  // Прелоадер: смена монограммы «Н&М» → «24.07.26»
+  const preloader = document.getElementById('preloader');
+  const preloaderMonogram = document.getElementById('preloaderMonogram');
+
+  if (preloaderMonogram) {
+    setTimeout(() => {
+      preloaderMonogram.classList.add('is-changing');
+      setTimeout(() => {
+        preloaderMonogram.style.display = 'none';
+        const dateEl = document.createElement('div');
+        dateEl.className = 'preloader__date';
+        dateEl.textContent = '24.07.26';
+        preloader.appendChild(dateEl);
+        requestAnimationFrame(() => dateEl.classList.add('is-visible'));
+      }, 400);
+    }, 1200);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (preloader) preloader.classList.add('is-hidden');
+    }, 500);
+  });
+  // Fallback на случай, если load уже сработал
+  if (document.readyState === 'complete' && preloader) {
+    setTimeout(() => preloader.classList.add('is-hidden'), 500);
+  }
+
+  // Кнопка «Наверх»
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Parallax для фоновых фото
+  const backgroundPhotos = document.querySelector('.background-photos');
+  const updateParallax = () => {
+    if (!backgroundPhotos) return;
+    const scrolled = window.scrollY;
+    backgroundPhotos.style.transform = `translateY(${scrolled * 0.15}px)`;
+  };
+
+  // Объединённый scroll handler
+  let scrollTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        updateParallax();
+
+        if (backToTop) {
+          if (window.scrollY > 400) {
+            backToTop.classList.add('is-visible');
+          } else {
+            backToTop.classList.remove('is-visible');
+          }
+        }
+
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
+
+  // Таймер с flip-анимацией
   const countdown = document.querySelector('[data-target]');
 
   if (countdown) {
     const targetDate = new Date(countdown.dataset.target).getTime();
     const values = countdown.querySelectorAll('[data-value]');
+    const prevValues = ['', '', '', ''];
 
     const updateCountdown = () => {
       const now = Date.now();
@@ -53,12 +120,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const parts = [days, hours, minutes, seconds];
       values.forEach((item, index) => {
-        item.textContent = String(parts[index]).padStart(2, '0');
+        const newText = String(parts[index]).padStart(2, '0');
+        if (newText !== prevValues[index]) {
+          item.classList.add('is-flipping');
+          setTimeout(() => {
+            item.textContent = newText;
+            item.classList.remove('is-flipping');
+          }, 200);
+          prevValues[index] = newText;
+        }
       });
     };
 
     updateCountdown();
-    setInterval(updateCountdown, 1000);
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    // Проверка наступления дня свадьбы
+    const celebration = document.getElementById('countdownCelebration');
+    const checkCelebration = () => {
+      if (targetDate - Date.now() <= 0) {
+        countdown.classList.add('is-celebrating');
+        if (celebration) celebration.classList.add('is-visible');
+        clearInterval(countdownInterval);
+      }
+    };
+    checkCelebration();
+    setInterval(checkCelebration, 1000);
   }
 
   const revealItems = document.querySelectorAll('.reveal');
@@ -91,6 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  // Анимация появления слов в hero h1
+  const heroH1 = document.querySelector('.hero h1');
+  if (heroH1) {
+    const words = heroH1.textContent.trim().split(/\s+/);
+    heroH1.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
+  }
 
   // Запускаем автоматическую смену фонов каждые 4 секунды
   scheduleNextAuto();
