@@ -93,12 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Кнопка «Наверх»
-  const backToTop = document.getElementById('backToTop');
-  if (backToTop) {
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
+  // const backToTop = document.getElementById('backToTop');
+  // if (backToTop) {
+  //   backToTop.addEventListener('click', () => {
+  //     window.scrollTo({ top: 0, behavior: 'smooth' });
+  //   });
+  // }
 
   // Parallax для фоновых фото (временно отключён)
   // const backgroundPhotos = document.querySelector('.background-photos');
@@ -124,13 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
           scrollHint.classList.add('is-hidden');
         }
 
-        if (backToTop) {
-          if (window.scrollY > 400) {
-            backToTop.classList.add('is-visible');
-          } else {
-            backToTop.classList.remove('is-visible');
-          }
-        }
+        // if (backToTop) {
+        //   if (window.scrollY > 400) {
+        //     backToTop.classList.add('is-visible');
+        //   } else {
+        //     backToTop.classList.remove('is-visible');
+        //   }
+        // }
 
         scrollTicking = false;
       });
