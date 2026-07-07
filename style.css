@@ -274,7 +274,7 @@ body {
   color: var(--text);
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
 img {
@@ -314,8 +314,8 @@ a.button {
   opacity: 0;
   -webkit-transform: scale(1.08);
   transform: scale(1.08);
-  -webkit-filter: blur(9px) saturate(1.05) brightness(0.9);
-  filter: blur(9px) saturate(1.05) brightness(0.9);
+  -webkit-filter: blur(4px) saturate(1.05) brightness(0.9);
+  filter: blur(4px) saturate(1.05) brightness(0.9);
   transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -424,7 +424,7 @@ a.button {
 .story-slide {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 24px;
   position: relative;
@@ -439,7 +439,7 @@ a.button {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 28px;
   background: transparent;
@@ -451,7 +451,7 @@ a.button {
 
 .hero__content {
   width: min(100%, 760px);
-  text-align: left;
+  text-align: center;
   padding: clamp(2.2rem, 5vw, 3.8rem);
   border-radius: var(--radius-xl);
 }
@@ -794,7 +794,7 @@ a.button {
   flex-direction: column;
   gap: 24px;
   width: min(100%, var(--max-width));
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
@@ -814,8 +814,11 @@ a.button {
 
 .section--closing {
   display: block;
-  text-align: left;
+  text-align: center;
   padding: clamp(2.2rem, 5vw, 3.8rem);
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 760px;
 }
 
 .signoff {
@@ -825,6 +828,15 @@ a.button {
   line-height: 1.4;
   max-width: 760px;
   font-weight: 400;
+}
+
+.signoff--center {
+  text-align: center;
+}
+
+.signoff--right {
+  text-align: right;
+  margin-top: 1.5rem;
 }
 
 .reveal {
