@@ -659,20 +659,7 @@ a.button {
   z-index: 2;
 }
 
-.section--intro {
-  margin-top: 0;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  z-index: 2;
-  isolation: isolate;
-  overflow: visible;
-}
-
-.section--intro > * {
-  position: relative;
-  z-index: 1;
-}
+/* .section--intro — удалено, блок использует общие стили */
 
 .section__title {
   margin: 0 0 1rem;
@@ -699,20 +686,7 @@ a.button {
   max-width: 700px;
 }
 
-.intro-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 24px;
-  align-items: center;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.intro-grid > * {
-  justify-self: center;
-  width: 100%;
-  max-width: 100%;
-}
+/* .intro-grid — удалено, больше не используется */
 
 .intro-card {
   padding: 1.25rem 1.3rem;
@@ -909,12 +883,6 @@ a.button {
   font-size: clamp(1rem, 1.8vw, 1.1rem);
   color: rgba(255, 250, 245, 0.94);
   line-height: 1.6;
-}
-
-@media (max-width: 900px) {
-  .intro-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 660px) {
