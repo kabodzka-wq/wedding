@@ -89,7 +89,10 @@
 /* Прелоадер */
 .preloader {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -115,6 +118,7 @@
 
 .preloader__monogram.is-changing {
   opacity: 0;
+  -webkit-transform: scale(0.8);
   transform: scale(0.8);
 }
 
@@ -127,12 +131,14 @@
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
   animation: preloaderPulse 1.8s ease-in-out infinite;
   opacity: 0;
+  -webkit-transform: scale(0.8);
   transform: scale(0.8);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, -webkit-transform 0.4s ease;
 }
 
 .preloader__date.is-visible {
   opacity: 1;
+  -webkit-transform: scale(1);
   transform: scale(1);
 }
 
@@ -143,8 +149,8 @@
 }
 
 @keyframes preloaderPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  0%, 100% { opacity: 0.6; -webkit-transform: scale(1); transform: scale(1); }
+  50% { opacity: 1; -webkit-transform: scale(1.05); transform: scale(1.05); }
 }
 
 /* Кнопка «Наверх» */
@@ -158,6 +164,7 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #fff;
   cursor: pointer;
@@ -166,13 +173,15 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
+  -webkit-transform: translateY(10px);
   transform: translateY(10px);
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease, background-color 0.3s ease;
 }
 
 .back-to-top.is-visible {
   opacity: 1;
   visibility: visible;
+  -webkit-transform: translateY(0);
   transform: translateY(0);
 }
 
@@ -188,7 +197,10 @@
 /* Лепестки */
 .petals {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   overflow: hidden;
   pointer-events: none;
   z-index: 1;
@@ -215,6 +227,7 @@
 
 @keyframes petalFall {
   0% {
+    -webkit-transform: translateY(0) rotate(0deg);
     transform: translateY(0) rotate(0deg);
     opacity: 0;
   }
@@ -225,6 +238,7 @@
     opacity: 0.6;
   }
   100% {
+    -webkit-transform: translateY(100vh) rotate(360deg);
     transform: translateY(100vh) rotate(360deg);
     opacity: 0;
   }
@@ -280,22 +294,29 @@ a.button {
 
 .background-photos {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: -3;
   pointer-events: none;
 }
 
 .background-photo {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0;
+  -webkit-transform: scale(1.08);
   transform: scale(1.08);
+  -webkit-filter: blur(9px) saturate(1.05) brightness(0.9);
   filter: blur(9px) saturate(1.05) brightness(0.9);
-  transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: opacity, transform, filter;
+  transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .background-photo--1 {
@@ -374,13 +395,17 @@ a.button {
 
 .background-photo.is-active {
   opacity: 1;
+  -webkit-transform: scale(1);
   transform: scale(1);
 }
 
 .background-photo::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: linear-gradient(180deg, rgba(10, 10, 10, 0.18) 0%, rgba(10, 10, 10, 0.34) 100%);
   pointer-events: none;
 }
@@ -454,7 +479,6 @@ a.button {
 .section__lead,
 .signoff {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  font-weight: 500;
   letter-spacing: -0.01em;
 }
 
@@ -462,7 +486,7 @@ a.button {
   margin: 0 0 0.7rem;
   font-family: 'Great Vibes', cursive;
   font-size: clamp(2.8rem, 7vw, 4.8rem);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.06em;
   color: #fdf5eb;
 }
@@ -470,6 +494,7 @@ a.button {
 .hero h1 .word {
   display: inline-block;
   opacity: 0;
+  -webkit-transform: translateY(20px);
   transform: translateY(20px);
   animation: wordRise 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
@@ -481,6 +506,7 @@ a.button {
 @keyframes wordRise {
   to {
     opacity: 1;
+    -webkit-transform: translateY(0);
     transform: translateY(0);
   }
 }
@@ -539,6 +565,7 @@ a.button {
 
 .button:hover,
 .button:focus-visible {
+  -webkit-transform: translateY(-1px) scale(1.01);
   transform: translateY(-1px) scale(1.01);
 }
 
@@ -584,7 +611,7 @@ a.button {
   font-size: clamp(1.9rem, 3vw, 2.6rem);
   line-height: 1.08;
   color: var(--text-strong);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .section__lead {
@@ -634,7 +661,10 @@ a.button {
   text-align: center;
   background: rgba(255, 255, 255, 0.04);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  -webkit-perspective: 200px;
   perspective: 200px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .countdown__value {
@@ -643,10 +673,11 @@ a.button {
   font-weight: 600;
   color: #ffffff;
   line-height: 1;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease, -webkit-transform 0.4s ease;
 }
 
 .countdown__value.is-flipping {
+  -webkit-transform: rotateX(90deg);
   transform: rotateX(90deg);
   opacity: 0;
 }
@@ -685,10 +716,12 @@ a.button {
 @keyframes celebrationRise {
   from {
     opacity: 0;
+    -webkit-transform: translateY(20px);
     transform: translateY(20px);
   }
   to {
     opacity: 1;
+    -webkit-transform: translateY(0);
     transform: translateY(0);
   }
 }
@@ -723,9 +756,17 @@ a.button {
   justify-content: center;
 }
 
+.slide-inner > * + * {
+  margin-top: 24px;
+}
+
 @media (max-width: 660px) {
   .slide-inner {
     gap: 16px;
+  }
+
+  .slide-inner > * + * {
+    margin-top: 16px;
   }
 }
 
@@ -741,7 +782,7 @@ a.button {
   font-size: clamp(1.7rem, 3.4vw, 2.4rem);
   line-height: 1.4;
   max-width: 760px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .reveal {
@@ -758,6 +799,10 @@ a.button {
   flex-direction: column;
   gap: 12px;
   max-width: 600px;
+}
+
+.wishes-stack > * + * {
+  margin-top: 12px;
 }
 
 .wishes-stack p {

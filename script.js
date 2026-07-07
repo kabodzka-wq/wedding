@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateParallax = () => {
     if (!backgroundPhotos) return;
     const scrolled = window.scrollY;
+    backgroundPhotos.style.webkitTransform = `translateY(${scrolled * 0.15}px)`;
     backgroundPhotos.style.transform = `translateY(${scrolled * 0.15}px)`;
   };
 
