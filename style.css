@@ -312,10 +312,7 @@ a.button {
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0;
-  -webkit-transform: scale(1.08);
-  transform: scale(1.08);
-  -webkit-filter: blur(4px) saturate(1.05) brightness(0.9);
-  filter: blur(4px) saturate(1.05) brightness(0.9);
+  transform: scale(1.08);  filter: blur(2px) saturate(1.05) brightness(0.9);
   transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -639,6 +636,8 @@ a.button {
 
 .section--intro {
   margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
   z-index: 2;
   isolation: isolate;
@@ -679,6 +678,14 @@ a.button {
   grid-template-columns: 1.2fr 0.8fr;
   gap: 24px;
   align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.intro-grid > * {
+  justify-self: center;
+  width: 100%;
+  max-width: 100%;
 }
 
 .intro-card {

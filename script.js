@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Прокручиваем вверх при загрузке
   window.scrollTo(0, 0);
 
-  const photos = Array.from(document.querySelectorAll('.background-photo'));
+  const photos = Array.from(document.querySelectorAll('.background-photo:not(.background-photo-landscape)'));
   const landscapePhotos = Array.from(document.querySelectorAll('.background-photo-landscape'));
 
   let currentPhotoIndex = 0;
