@@ -12,6 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // Прокручиваем вверх при загрузке
   window.scrollTo(0, 0);
 
+  // Фикс высоты фонового контейнера для мобильных браузеров
+  const setBackgroundHeight = () => {
+    const bg = document.querySelector('.background-photos');
+    if (bg) {
+      const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      bg.style.height = h + 'px';
+    }
+  };
+  setBackgroundHeight();
+  window.addEventListener('resize', setBackgroundHeight);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(setBackgroundHeight, 100);
+  });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setBackgroundHeight);
+  }
+
   const photos = Array.from(document.querySelectorAll('.background-photo:not(.background-photo-landscape)'));
   const landscapePhotos = Array.from(document.querySelectorAll('.background-photo-landscape'));
 

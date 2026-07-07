@@ -198,9 +198,9 @@
 .petals {
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   pointer-events: none;
   z-index: 1;
@@ -238,8 +238,8 @@
     opacity: 0.6;
   }
   100% {
-    -webkit-transform: translateY(100vh) rotate(360deg);
-    transform: translateY(100vh) rotate(360deg);
+    -webkit-transform: translateY(100%) rotate(360deg);
+    transform: translateY(100%) rotate(360deg);
     opacity: 0;
   }
 }
@@ -275,18 +275,8 @@ body {
   color: var(--text);
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  overflow-x: hidden;
-}
-
-body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  background: #1a1a1a;
-  color: var(--text);
-  line-height: 1.6;
-  -webkit-overflow-scrolling: touch;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 4px 24px rgba(0, 0, 0, 0.5);
+  overflow-x: hidden;
 }
 
 img {
@@ -306,9 +296,7 @@ a.button {
 
 .background-photos {
   position: fixed;
-  top: -50px;
-  right: 0;
-  bottom: -50px;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
@@ -321,12 +309,10 @@ a.button {
 .background-photo {
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-position: center;
+  background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0;
@@ -421,8 +407,6 @@ a.button {
   content: "";
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -974,19 +958,6 @@ a.button {
 
   .scroll-hint {
     bottom: 1.5rem;
-  }
-}
-
-/* iOS Safari — дополнительный запас для адресной строки */
-@supports (-webkit-touch-callout: none) {
-  .background-photos {
-    top: -100px;
-    bottom: -100px;
-  }
-
-  .hero {
-    min-height: -webkit-fill-available;
-    min-height: 100dvh;
   }
 }
 
