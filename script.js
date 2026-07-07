@@ -2,7 +2,16 @@
 // Свадебное приглашение Никиты и Маргариты
 // Автор кода: nkv
 //
+
+// Отключаем автоматическое восстановление позиции скролла
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Прокручиваем вверх при загрузке
+  window.scrollTo(0, 0);
+
   const photos = Array.from(document.querySelectorAll('.background-photo'));
   const landscapePhotos = Array.from(document.querySelectorAll('.background-photo-landscape'));
 
@@ -72,21 +81,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Parallax для фоновых фото
-  const backgroundPhotos = document.querySelector('.background-photos');
-  const updateParallax = () => {
-    if (!backgroundPhotos) return;
-    const scrolled = window.scrollY;
-    backgroundPhotos.style.webkitTransform = `translateY(${scrolled * 0.15}px)`;
-    backgroundPhotos.style.transform = `translateY(${scrolled * 0.15}px)`;
-  };
+  // Parallax для фоновых фото (временно отключён)
+  // const backgroundPhotos = document.querySelector('.background-photos');
+  // const updateParallax = () => {
+  //   if (!backgroundPhotos) return;
+  //   const scrolled = window.scrollY;
+  //   backgroundPhotos.style.webkitTransform = `translateY(${scrolled * 0.15}px)`;
+  //   backgroundPhotos.style.transform = `translateY(${scrolled * 0.15}px)`;
+  // };
 
   // Объединённый scroll handler
   let scrollTicking = false;
   window.addEventListener('scroll', () => {
     if (!scrollTicking) {
       requestAnimationFrame(() => {
-        updateParallax();
+        // updateParallax(); // временно отключён
 
         if (backToTop) {
           if (window.scrollY > 400) {
@@ -154,14 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.intersectionRatio > 0.7) {
+          if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-          } else {
-            entry.target.classList.remove('is-visible');
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
     );
 
     revealItems.forEach((item) => observer.observe(item));
