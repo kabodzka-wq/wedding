@@ -4,7 +4,6 @@
 //
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Массивы фотографий
   const portraitPhotos = [
     'images/photo-1.webp',
     'images/photo-2.webp',
@@ -31,52 +30,27 @@ document.addEventListener('DOMContentLoaded', () => {
   let isLandscape = window.matchMedia('(orientation: landscape)').matches;
   let autoTimeout;
 
-  // Два слоя для crossfade (портрет)
   let portraitLayerA = null;
   let portraitLayerB = null;
-  let portraitSwap = false; // false = A visible, B hidden
+  let portraitSwap = false;
 
-  // Два слоя для crossfade (альбом)
   let landscapeLayerA = null;
   let landscapeLayerB = null;
   let landscapeSwap = false;
 
-  // Инициализация слоёв
+  function createImg(className, src) {
+    const div = document.createElement('div');
+    div.className = className;
+    div.style.backgroundImage = `url('${src}')`;
+    div.setAttribute('aria-hidden', 'true');
+    return div;
+  }
+
   function initLayers() {
-    // Создаём слои для портрета (теперь <img>)
-    portraitLayerA = document.createElement('img');
-    portraitLayerA.className = 'background-layer is-portrait';
-    portraitLayerA.src = portraitPhotos[0];
-    portraitLayerA.loading = 'eager';
-    portraitLayerA.alt = '';
-    portraitLayerA.setAttribute('aria-hidden', 'true');
-
-    portraitLayerB = document.createElement('img');
-    portraitLayerB.className = 'background-layer is-portrait is-faded';
-    portraitLayerB.src = portraitPhotos[1];
-    portraitLayerB.loading = 'eager';
-    portraitLayerB.alt = '';
-    portraitLayerB.setAttribute('aria-hidden', 'true');
-
-    // Создаём слои для ландшафта
-    landscapeLayerA = document.createElement('img');
-    landscapeLayerA.className = 'background-layer is-landscape';
-    landscapeLayerA.src = landscapePhotos[0];
-    landscapeLayerA.loading = 'eager';
-    landscapeLayerA.alt = '';
-    landscapeLayerA.setAttribute('aria-hidden', 'true');
-
-    landscapeLayerB = document.createElement('img');
-    landscapeLayerB.className = 'background-layer is-landscape is-faded';
-    landscapeLayerB.src = landscapePhotos[1];
-    landscapeLayerB.loading = 'eager';
-    landscapeLayerB.alt = '';
-    landscapeLayerB.setAttribute('aria-hidden', 'true');
-
-    // Оверлей
-    const overlay = document.createElement('div');
-    overlay.className = 'background-overlay';
-    overlay.setAttribute('aria-hidden', 'true');
+    portraitLayerA = createImg('background-layer is-portrait', portraitPhotos[0]);
+    portraitLayerB = createImg('background-layer is-portrait is-faded', portraitPhotos[1]);
+    landscapeLayerA = createImg('background-layer is-landscape', landscapePhotos[0]);
+    landscapeLayerB = createImg('background-layer is-landscape is-faded', landscapePhotos[1]);
 
     // Добавляем все слои в page
     const page = document.querySelector('.page');
@@ -84,10 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     page.prepend(portraitLayerB);
     page.prepend(landscapeLayerA);
     page.prepend(landscapeLayerB);
-    page.prepend(overlay);
   }
 
-  // Смена фото с crossfade
   function changePhoto() {
     if (!portraitLayerA || !portraitLayerB || !landscapeLayerA || !landscapeLayerB) return;
 
@@ -96,34 +68,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetLayer = landscapeSwap ? landscapeLayerA : landscapeLayerB;
       const sourceLayer = landscapeSwap ? landscapeLayerB : landscapeLayerA;
 
-      targetLayer.src = landscapePhotos[landscapeIndex];
-
-      // setTimeout гарантирует, что анимация начнётся в следующем тике,
-      // даже если фото уже в кэше и браузер успел отрисовать кадр
-      setTimeout(() => {
-        targetLayer.classList.remove('is-faded');
-        sourceLayer.classList.add('is-faded');
-      }, 0);
-
+      targetLayer.style.backgroundImage = `url('${landscapePhotos[landscapeIndex]}')`;
+      targetLayer.classList.remove('is-faded');
+      sourceLayer.classList.add('is-faded');
       landscapeSwap = !landscapeSwap;
     } else {
       portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
       const targetLayer = portraitSwap ? portraitLayerA : portraitLayerB;
       const sourceLayer = portraitSwap ? portraitLayerB : portraitLayerA;
 
-      targetLayer.src = portraitPhotos[portraitIndex];
-
-      setTimeout(() => {
-        targetLayer.classList.remove('is-faded');
-        sourceLayer.classList.add('is-faded');
-      }, 0);
-
+      targetLayer.style.backgroundImage = `url('${portraitPhotos[portraitIndex]}')`;
+      targetLayer.classList.remove('is-faded');
+      sourceLayer.classList.add('is-faded');
       portraitSwap = !portraitSwap;
     }
   }
-  }
 
-  // Автоматическая смена
   function scheduleNextAuto() {
     clearTimeout(autoTimeout);
     autoTimeout = setTimeout(() => {
@@ -132,11 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4000);
   }
 
-  // Обработка смены ориентации
   window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
     isLandscape = e.matches;
 
-    // Сбрасываем swap и индексы
     if (isLandscape) {
       landscapeSwap = false;
       landscapeIndex = 0;
@@ -153,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
       portraitLayerB.src = portraitPhotos[1];
     }
 
-    // Перезапускаем таймер
     scheduleNextAuto();
   });
 
@@ -241,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
     const countdownInterval = setInterval(updateCountdown, 1000);
 
-    // Проверка наступления дня свадьбы
     const celebration = document.getElementById('countdownCelebration');
     const checkCelebration = () => {
       if (targetDate - Date.now() <= 0) {
@@ -284,16 +240,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Анимация появления слов в hero h1
   const heroH1 = document.querySelector('.hero h1');
   if (heroH1) {
     const words = heroH1.textContent.trim().split(/\s+/);
     heroH1.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
   }
 
-  // Запускаем автоматическую смену фонов каждые 4 секунды
-  // Инициализируем слои
   initLayers();
   scheduleNextAuto();
 });
-
