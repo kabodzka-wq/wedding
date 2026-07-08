@@ -97,8 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const sourceLayer = landscapeSwap ? landscapeLayerB : landscapeLayerA;
 
       targetLayer.src = landscapePhotos[landscapeIndex];
-      targetLayer.classList.remove('is-faded');
-      sourceLayer.classList.add('is-faded');
+
+      // setTimeout гарантирует, что анимация начнётся в следующем тике,
+      // даже если фото уже в кэше и браузер успел отрисовать кадр
+      setTimeout(() => {
+        targetLayer.classList.remove('is-faded');
+        sourceLayer.classList.add('is-faded');
+      }, 0);
+
       landscapeSwap = !landscapeSwap;
     } else {
       portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
@@ -106,10 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const sourceLayer = portraitSwap ? portraitLayerB : portraitLayerA;
 
       targetLayer.src = portraitPhotos[portraitIndex];
-      targetLayer.classList.remove('is-faded');
-      sourceLayer.classList.add('is-faded');
+
+      setTimeout(() => {
+        targetLayer.classList.remove('is-faded');
+        sourceLayer.classList.add('is-faded');
+      }, 0);
+
       portraitSwap = !portraitSwap;
     }
+  }
   }
 
   // Автоматическая смена
