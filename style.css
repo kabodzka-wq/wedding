@@ -88,22 +88,24 @@
 
 /* Прелоадер */
 .preloader {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   background: #1a1a1a;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
+}
+
+.preloader.is-visible {
+  display: flex;
 }
 
 .preloader.is-hidden {
-  opacity: 0;
+  display: none;
 }
 
 .preloader__monogram {
@@ -150,49 +152,6 @@
 @keyframes preloaderPulse {
   0%, 100% { opacity: 0.6; -webkit-transform: scale(1); transform: scale(1); }
   50% { opacity: 1; -webkit-transform: scale(1.05); transform: scale(1.05); }
-}
-
-/* Кнопка «Наверх» */
-.back-to-top {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 100;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  -webkit-transform: translateY(10px);
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease, background-color 0.3s ease;
-  pointer-events: none;
-}
-
-.back-to-top.is-visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
-}
-
-.back-to-top:hover {
-  background: rgba(255, 255, 255, 0.22);
-}
-
-.back-to-top svg {
-  width: 20px;
-  height: 20px;
 }
 
 /* Лепестки */
@@ -264,21 +223,76 @@
   box-sizing: border-box;
 }
 
-html {
-  overflow-x: hidden;
-  touch-action: manipulation;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 4px 24px rgba(0, 0, 0, 0.5);
+  background: #1a1a1a;
+}
+
+/* Фоновые слои с анимацией crossfade */
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  z-index: -3;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Тёмный оверлей поверх фона */
+.background-layer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.18) 0%, rgba(10, 10, 10, 0.34) 100%);
+  pointer-events: none;
+}
+
+/* Класс для fade-out */
+.background-layer.is-faded {
+  opacity: 0;
+}
+
+/* Скрытие слоёв по ориентации */
+.background-layer.is-landscape {
+  display: none;
+}
+
+@media (orientation: landscape) {
+  .background-layer.is-portrait {
+    display: none;
+  }
+
+  .background-layer.is-landscape {
+    display: block;
+  }
 }
 
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  background: #1a1a1a;
   color: var(--text);
   line-height: 1.6;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 4px 24px rgba(0, 0, 0, 0.5);
-  overflow-x: hidden;
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -296,139 +310,15 @@ a.button {
   font: inherit;
 }
 
-.background-photos {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  z-index: -3;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.background-photo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0;
-  -webkit-transform: scale(1.08);
-  transform: scale(1.08);
-  -webkit-filter: blur(2px) saturate(1.05) brightness(0.9);
-  filter: blur(2px) saturate(1.05) brightness(0.9);
-  transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), -webkit-transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.background-photo--1 {
-  background-image: url("images/photo-1.webp");
-}
-
-.background-photo--2 {
-  background-image: url("images/photo-2.webp");
-}
-
-.background-photo--3 {
-  background-image: url("images/photo-3.webp");
-}
-
-.background-photo--4 {
-  background-image: url("images/photo-4.webp");
-}
-
-.background-photo--5 {
-  background-image: url("images/photo-5.webp");
-}
-
-.background-photo--6 {
-  background-image: url("images/photo-6.webp");
-}
-
-.background-photo--7 {
-  background-image: url("images/photo-7.webp");
-}
-
-.background-photo--8 {
-  background-image: url("images/photo-8.webp");
-}
-
-.background-photo--9 {
-  background-image: url("images/photo-9.webp");
-}
-
-.background-photo--10 {
-  background-image: url("images/photo-10.webp");
-}
-
-.background-photo-landscape {
-  display: none;
-}
-
-@media (orientation: landscape) {
-  .background-photo {
-    display: none;
-  }
-
-  .background-photo-landscape {
-    display: block;
-  }
-}
-
-.background-photo-landscape--1 {
-  background-image: url("images/landphoto-1.webp");
-}
-
-.background-photo-landscape--2 {
-  background-image: url("images/landphoto-2.webp");
-}
-
-.background-photo-landscape--3 {
-  background-image: url("images/landphoto-3.webp");
-}
-
-.background-photo-landscape--4 {
-  background-image: url("images/landphoto-4.webp");
-}
-
-.background-photo-landscape--5 {
-  background-image: url("images/landphoto-5.webp");
-}
-
-.background-photo.is-active {
-  opacity: 1;
-  -webkit-transform: scale(1);
-  transform: scale(1);
-}
-
-.background-photo::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.18) 0%, rgba(10, 10, 10, 0.34) 100%);
-  pointer-events: none;
-}
-
 .page {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  isolation: isolate;
-  overflow-x: hidden;
-  touch-action: pan-y;
 }
 
 .story-track {
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
 .story-slide {
@@ -455,7 +345,6 @@ a.button {
   padding: 28px;
   background: transparent;
   color: #f7efe8;
-  isolation: isolate;
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
@@ -659,8 +548,6 @@ a.button {
   z-index: 2;
 }
 
-/* .section--intro — удалено, блок использует общие стили */
-
 .section__title {
   margin: 0 0 1rem;
   font-family: 'Great Vibes', cursive;
@@ -684,22 +571,6 @@ a.button {
   color: rgba(255, 250, 245, 0.94);
   line-height: 1.6;
   max-width: 700px;
-}
-
-/* .intro-grid — удалено, больше не используется */
-
-.intro-card {
-  padding: 1.25rem 1.3rem;
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-}
-
-.intro-card p {
-  margin: 0;
-  font-size: clamp(1rem, 1.8vw, 1.1rem);
-  color: #fff9f5;
-  line-height: 1.6;
 }
 
 .countdown {

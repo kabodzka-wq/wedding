@@ -3,135 +3,193 @@
 // Автор кода: nkv
 //
 
-// Отключаем автоматическое восстановление позиции скролла
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Прокручиваем вверх при загрузке (мгновенно, без smooth)
-  document.documentElement.style.scrollBehavior = 'auto';
-  window.scrollTo(0, 0);
-  document.documentElement.style.scrollBehavior = '';
+  // Массивы фотографий
+  const portraitPhotos = [
+    'images/photo-1.webp',
+    'images/photo-2.webp',
+    'images/photo-3.webp',
+    'images/photo-4.webp',
+    'images/photo-5.webp',
+    'images/photo-6.webp',
+    'images/photo-7.webp',
+    'images/photo-8.webp',
+    'images/photo-9.webp',
+    'images/photo-10.webp',
+  ];
 
-  // Фикс высоты фонового контейнера для мобильных браузеров
-  const setBackgroundHeight = () => {
-    const bg = document.querySelector('.background-photos');
-    if (bg) {
-      const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-      bg.style.height = h + 'px';
-    }
-  };
-  setBackgroundHeight();
-  window.addEventListener('resize', setBackgroundHeight);
-  window.addEventListener('orientationchange', () => {
-    setTimeout(setBackgroundHeight, 100);
-  });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', setBackgroundHeight);
-  }
+  const landscapePhotos = [
+    'images/landphoto-1.webp',
+    'images/landphoto-2.webp',
+    'images/landphoto-3.webp',
+    'images/landphoto-4.webp',
+    'images/landphoto-5.webp',
+  ];
 
-  const photos = Array.from(document.querySelectorAll('.background-photo:not(.background-photo-landscape)'));
-  const landscapePhotos = Array.from(document.querySelectorAll('.background-photo-landscape'));
-
-  let currentPhotoIndex = 0;
-  let currentLandscapeIndex = 0;
+  let portraitIndex = 0;
+  let landscapeIndex = 0;
+  let isLandscape = window.matchMedia('(orientation: landscape)').matches;
   let autoTimeout;
 
-  const activatePhoto = (index) => {
-    photos.forEach((photo, i) => {
-      photo.classList.toggle('is-active', i === index);
-      photo.style.opacity = i === index ? '1' : '0';
-    });
+  // Два слоя для crossfade (портрет)
+  let portraitLayerA = null;
+  let portraitLayerB = null;
+  let portraitActive = 'A'; // какой слой сейчас активен
 
-    if (landscapePhotos.length) {
-      landscapePhotos.forEach((photo, i) => {
-        photo.classList.toggle('is-active', i === currentLandscapeIndex);
-        photo.style.opacity = i === currentLandscapeIndex ? '1' : '0';
-      });
+  // Два слоя для crossfade (альбом)
+  let landscapeLayerA = null;
+  let landscapeLayerB = null;
+  let landscapeActive = 'A';
+
+  // Инициализация слоёв
+  function initLayers() {
+    // Создаём слои для портрета
+    portraitLayerA = document.createElement('div');
+    portraitLayerA.className = 'background-layer is-portrait';
+    portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
+    portraitLayerA.setAttribute('aria-hidden', 'true');
+
+    portraitLayerB = document.createElement('div');
+    portraitLayerB.className = 'background-layer is-portrait is-faded';
+    portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
+    portraitLayerB.setAttribute('aria-hidden', 'true');
+
+    // Создаём слои для ландшафта
+    landscapeLayerA = document.createElement('div');
+    landscapeLayerA.className = 'background-layer is-landscape';
+    landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
+    landscapeLayerA.setAttribute('aria-hidden', 'true');
+
+    landscapeLayerB = document.createElement('div');
+    landscapeLayerB.className = 'background-layer is-landscape is-faded';
+    landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
+    landscapeLayerB.setAttribute('aria-hidden', 'true');
+
+    // Добавляем все слои в page
+    const page = document.querySelector('.page');
+    page.prepend(portraitLayerA);
+    page.prepend(portraitLayerB);
+    page.prepend(landscapeLayerA);
+    page.prepend(landscapeLayerB);
+  }
+
+  // Смена фото с crossfade
+  function changePhoto(isLand) {
+    let layerA, layerB, currentIndex, photos;
+
+    if (isLand) {
+      layerA = landscapeLayerA;
+      layerB = landscapeLayerB;
+      currentIndex = landscapeIndex;
+      photos = landscapePhotos;
+    } else {
+      layerA = portraitLayerA;
+      layerB = portraitLayerB;
+      currentIndex = portraitIndex;
+      photos = portraitPhotos;
     }
-  };
 
-  const scheduleNextAuto = () => {
+    if (!layerA || !layerB) return;
+
+    const nextIndex = (currentIndex + 1) % photos.length;
+    const nextPhoto = photos[nextIndex];
+
+    // Определяем, какой слой сейчас активен (opacity: 1)
+    const activeLayer = landscapeActive === 'A' ? layerA : layerB;
+    const inactiveLayer = landscapeActive === 'A' ? layerB : layerA;
+
+    // Устанавливаем новое фото на неактивный слой
+    inactiveLayer.style.backgroundImage = `url('${nextPhoto}')`;
+
+    // Меняем местами: inactive становится active
+    inactiveLayer.classList.remove('is-faded');
+    activeLayer.classList.add('is-faded');
+
+    // Обновляем индекс
+    if (isLand) {
+      landscapeIndex = nextIndex;
+      landscapeActive = landscapeActive === 'A' ? 'B' : 'A';
+    } else {
+      portraitIndex = nextIndex;
+      portraitActive = portraitActive === 'A' ? 'B' : 'A';
+    }
+  }
+
+  // Автоматическая смена
+  function scheduleNextAuto() {
     clearTimeout(autoTimeout);
     autoTimeout = setTimeout(() => {
-      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
-      if (landscapePhotos.length) {
-        currentLandscapeIndex = (currentLandscapeIndex + 1) % landscapePhotos.length;
+      if (isLandscape) {
+        changePhoto(true);
+      } else {
+        changePhoto(false);
       }
-      activatePhoto(currentPhotoIndex);
       scheduleNextAuto();
     }, 4000);
-  };
-
-  // Прелоадер: смена монограммы «Н&М» → «24.07.26»
-  const preloader = document.getElementById('preloader');
-  const preloaderMonogram = document.getElementById('preloaderMonogram');
-
-  if (preloaderMonogram) {
-    setTimeout(() => {
-      preloaderMonogram.classList.add('is-changing');
-      setTimeout(() => {
-        preloaderMonogram.style.display = 'none';
-        const dateEl = document.createElement('div');
-        dateEl.className = 'preloader__date';
-        dateEl.textContent = '24.07.26';
-        preloader.appendChild(dateEl);
-        requestAnimationFrame(() => dateEl.classList.add('is-visible'));
-      }, 400);
-    }, 1200);
   }
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (preloader) preloader.classList.add('is-hidden');
-    }, 500);
+  // Обработка смены ориентации
+  window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
+    isLandscape = e.matches;
+    if (isLandscape) {
+      landscapeIndex = 0;
+      landscapeActive = 'A';
+      landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
+      landscapeLayerA.classList.remove('is-faded');
+      landscapeLayerB.classList.add('is-faded');
+    } else {
+      portraitIndex = 0;
+      portraitActive = 'A';
+      portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
+      portraitLayerA.classList.remove('is-faded');
+      portraitLayerB.classList.add('is-faded');
+    }
   });
-  // Fallback на случай, если load уже сработал
-  if (document.readyState === 'complete' && preloader) {
-    setTimeout(() => preloader.classList.add('is-hidden'), 500);
+
+  // Прелоадер
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.classList.add('is-visible');
+    const preloaderMonogram = document.getElementById('preloaderMonogram');
+    if (preloaderMonogram) {
+      setTimeout(() => {
+        preloaderMonogram.classList.add('is-changing');
+        setTimeout(() => {
+          preloaderMonogram.style.display = 'none';
+          const dateEl = document.createElement('div');
+          dateEl.className = 'preloader__date';
+          dateEl.textContent = '24.07.26';
+          preloader.appendChild(dateEl);
+          requestAnimationFrame(() => dateEl.classList.add('is-visible'));
+        }, 400);
+      }, 1200);
+    }
+    const hidePreloader = () => {
+      preloader.classList.remove('is-visible');
+      preloader.classList.add('is-hidden');
+    };
+    window.addEventListener('load', () => {
+      setTimeout(hidePreloader, 500);
+    });
+    if (document.readyState === 'complete') {
+      setTimeout(hidePreloader, 500);
+    }
   }
 
-  // Кнопка «Наверх»
-  // const backToTop = document.getElementById('backToTop');
-  // if (backToTop) {
-  //   backToTop.addEventListener('click', () => {
-  //     window.scrollTo({ top: 0, behavior: 'smooth' });
-  //   });
-  // }
-
-  // Parallax для фоновых фото (временно отключён)
-  // const backgroundPhotos = document.querySelector('.background-photos');
-  // const updateParallax = () => {
-  //   if (!backgroundPhotos) return;
-  //   const scrolled = window.scrollY;
-  //   backgroundPhotos.style.webkitTransform = `translateY(${scrolled * 0.15}px)`;
-  //   backgroundPhotos.style.transform = `translateY(${scrolled * 0.15}px)`;
-  // };
-
-  // Объединённый scroll handler
+  // Scroll hint
   const scrollHint = document.querySelector('.scroll-hint');
   if (scrollHint) {
     setTimeout(() => scrollHint.classList.add('is-visible'), 2000);
   }
+
+  // Scroll handler
   let scrollTicking = false;
   window.addEventListener('scroll', () => {
     if (!scrollTicking) {
       requestAnimationFrame(() => {
-        // updateParallax(); // временно отключён
-
         if (scrollHint && window.scrollY > 10) {
           scrollHint.classList.add('is-hidden');
         }
-
-        // if (backToTop) {
-        //   if (window.scrollY > 400) {
-        //     backToTop.classList.add('is-visible');
-        //   } else {
-        //     backToTop.classList.remove('is-visible');
-        //   }
-        // }
-
         scrollTicking = false;
       });
       scrollTicking = true;
@@ -224,5 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Запускаем автоматическую смену фонов каждые 4 секунды
   scheduleNextAuto();
-  activatePhoto(0);
+  // Инициализируем слои
+  initLayers();
 });
+
