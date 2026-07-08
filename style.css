@@ -242,43 +242,42 @@ body {
   background: #1a1a1a;
 }
 
-/* Фоновые слои — два img, плавно переключаем opacity */
+/* Фоновые слои с анимацией crossfade */
 .background-layer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   z-index: -3;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  opacity: 1;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* Скрытый слой */
-.background-layer.is-hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Оверлей */
-.background-overlay {
-  position: fixed;
+/* Тёмный оверлей поверх фона */
+.background-layer::after {
+  content: "";
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -2;
   background: linear-gradient(180deg, rgba(10, 10, 10, 0.18) 0%, rgba(10, 10, 10, 0.34) 100%);
   pointer-events: none;
 }
 
-/* Скрытие по ориентации */
+/* Класс для fade-out */
+.background-layer.is-faded {
+  opacity: 0;
+}
+
+/* Скрытие слоёв по ориентации */
 @media (orientation: portrait) {
   .background-layer.is-landscape {
     display: none;

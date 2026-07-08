@@ -26,103 +26,83 @@ document.addEventListener('DOMContentLoaded', () => {
     'images/landphoto-5.webp',
   ];
 
+  let portraitIndex = 0;
+  let landscapeIndex = 0;
   let isLandscape = window.matchMedia('(orientation: landscape)').matches;
   let autoTimeout;
 
-  // Два слоя для каждой ориентации
-  let portraitVisible = null;
-  let portraitHidden = null;
+  // Два слоя для crossfade (портрет)
+  let portraitLayerA = null;
+  let portraitLayerB = null;
+  let portraitSwap = false; // false = A visible, B hidden
 
-  let landscapeVisible = null;
-  let landscapeHidden = null;
-
-  let portraitIndex = 0;
-  let landscapeIndex = 0;
-
-  // Создаём img элемент
-  function createImg(className, src) {
-    const img = document.createElement('img');
-    img.className = className;
-    img.src = src;
-    img.loading = 'eager';
-    img.decoding = 'async';
-    img.alt = '';
-    img.setAttribute('aria-hidden', 'true');
-    return img;
-  }
+  // Два слоя для crossfade (альбом)
+  let landscapeLayerA = null;
+  let landscapeLayerB = null;
+  let landscapeSwap = false;
 
   // Инициализация слоёв
   function initLayers() {
-    portraitVisible = createImg('background-layer is-portrait', portraitPhotos[0]);
-    portraitHidden = createImg('background-layer is-portrait is-hidden', portraitPhotos[1]);
+    // Создаём слои для портрета
+    portraitLayerA = document.createElement('div');
+    portraitLayerA.className = 'background-layer is-portrait';
+    portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
+    portraitLayerA.setAttribute('aria-hidden', 'true');
 
-    landscapeVisible = createImg('background-layer is-landscape', landscapePhotos[0]);
-    landscapeHidden = createImg('background-layer is-landscape is-hidden', landscapePhotos[1]);
+    portraitLayerB = document.createElement('div');
+    portraitLayerB.className = 'background-layer is-portrait is-faded';
+    portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
+    portraitLayerB.setAttribute('aria-hidden', 'true');
 
-    const overlay = document.createElement('div');
-    overlay.className = 'background-overlay';
-    overlay.setAttribute('aria-hidden', 'true');
+    // Создаём слои для ландшафта
+    landscapeLayerA = document.createElement('div');
+    landscapeLayerA.className = 'background-layer is-landscape';
+    landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
+    landscapeLayerA.setAttribute('aria-hidden', 'true');
 
+    landscapeLayerB = document.createElement('div');
+    landscapeLayerB.className = 'background-layer is-landscape is-faded';
+    landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
+    landscapeLayerB.setAttribute('aria-hidden', 'true');
+
+    // Добавляем все слои в page
     const page = document.querySelector('.page');
-    page.prepend(portraitVisible);
-    page.prepend(portraitHidden);
-    page.prepend(landscapeVisible);
-    page.prepend(landscapeHidden);
-    page.prepend(overlay);
-
-    // Вешаем обработчики load
-    portraitHidden.addEventListener('load', onPortraitLoad);
-    landscapeHidden.addEventListener('load', onLandscapeLoad);
+    page.prepend(portraitLayerA);
+    page.prepend(portraitLayerB);
+    page.prepend(landscapeLayerA);
+    page.prepend(landscapeLayerB);
   }
 
-  // Переключение портретного набора
-  function swapPortrait() {
-    portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
-    portraitHidden.removeEventListener('load', onPortraitLoad);
-    portraitHidden.src = portraitPhotos[portraitIndex];
-    portraitHidden.addEventListener('load', onPortraitLoad);
-    // Если фото уже в кэше, load мог сработать до добавления обработчика
-    if (portraitHidden.complete) {
-      portraitHidden.dispatchEvent(new Event('load'));
+  // Смена фото с crossfade
+  function changePhoto() {
+    if (!portraitLayerA || !portraitLayerB || !landscapeLayerA || !landscapeLayerB) return;
+
+    if (isLandscape) {
+      landscapeIndex = (landscapeIndex + 1) % landscapePhotos.length;
+      const targetLayer = landscapeSwap ? landscapeLayerA : landscapeLayerB;
+      const sourceLayer = landscapeSwap ? landscapeLayerB : landscapeLayerA;
+
+      targetLayer.style.backgroundImage = `url('${landscapePhotos[landscapeIndex]}')`;
+      targetLayer.classList.remove('is-faded');
+      sourceLayer.classList.add('is-faded');
+      landscapeSwap = !landscapeSwap;
+    } else {
+      portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
+      const targetLayer = portraitSwap ? portraitLayerA : portraitLayerB;
+      const sourceLayer = portraitSwap ? portraitLayerB : portraitLayerA;
+
+      targetLayer.style.backgroundImage = `url('${portraitPhotos[portraitIndex]}')`;
+      targetLayer.classList.remove('is-faded');
+      sourceLayer.classList.add('is-faded');
+      portraitSwap = !portraitSwap;
     }
   }
 
-  function onPortraitLoad() {
-    this.removeEventListener('load', onPortraitLoad);
-    // Текущий видимый становится скрытым, скрытый — видимым
-    portraitVisible.classList.add('is-hidden');
-    portraitHidden.classList.remove('is-hidden');
-    const tmp = portraitVisible;
-    portraitVisible = portraitHidden;
-    portraitHidden = tmp;
-  }
-
-  // Переключение ландшафтного набора
-  function swapLandscape() {
-    landscapeIndex = (landscapeIndex + 1) % landscapePhotos.length;
-    landscapeHidden.removeEventListener('load', onLandscapeLoad);
-    landscapeHidden.src = landscapePhotos[landscapeIndex];
-    landscapeHidden.addEventListener('load', onLandscapeLoad);
-    if (landscapeHidden.complete) {
-      landscapeHidden.dispatchEvent(new Event('load'));
-    }
-  }
-
-  function onLandscapeLoad() {
-    this.removeEventListener('load', onLandscapeLoad);
-    landscapeVisible.classList.add('is-hidden');
-    landscapeHidden.classList.remove('is-hidden');
-    const tmp = landscapeVisible;
-    landscapeVisible = landscapeHidden;
-    landscapeHidden = tmp;
-  }
-
-  // Автоматическая смена обоих наборов
+  // Автоматическая смена
   function scheduleNextAuto() {
     clearTimeout(autoTimeout);
     autoTimeout = setTimeout(() => {
-      swapPortrait();
-      swapLandscape();
+      changePhoto();
       scheduleNextAuto();
     }, 4000);
   }
@@ -131,20 +111,24 @@ document.addEventListener('DOMContentLoaded', () => {
   window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
     isLandscape = e.matches;
 
+    // Сбрасываем swap и индексы
     if (isLandscape) {
+      landscapeSwap = false;
       landscapeIndex = 0;
-      landscapeVisible.src = landscapePhotos[0];
-      landscapeHidden.src = landscapePhotos[1];
-      landscapeVisible.classList.remove('is-hidden');
-      landscapeHidden.classList.add('is-hidden');
+      landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
+      landscapeLayerA.classList.remove('is-faded');
+      landscapeLayerB.classList.add('is-faded');
+      landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
     } else {
+      portraitSwap = false;
       portraitIndex = 0;
-      portraitVisible.src = portraitPhotos[0];
-      portraitHidden.src = portraitPhotos[1];
-      portraitVisible.classList.remove('is-hidden');
-      portraitHidden.classList.add('is-hidden');
+      portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
+      portraitLayerA.classList.remove('is-faded');
+      portraitLayerB.classList.add('is-faded');
+      portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
     }
 
+    // Перезапускаем таймер
     scheduleNextAuto();
   });
 
@@ -282,7 +266,9 @@ document.addEventListener('DOMContentLoaded', () => {
     heroH1.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
   }
 
-  // Запускаем
+  // Запускаем автоматическую смену фонов каждые 4 секунды
+  // Инициализируем слои
   initLayers();
   scheduleNextAuto();
 });
+
