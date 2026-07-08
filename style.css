@@ -242,7 +242,7 @@ body {
   background: #1a1a1a;
 }
 
-/* Фоновые слои с анимацией crossfade (теперь <img>) */
+/* Фоновые слои — два img, плавно переключаем opacity */
 .background-layer {
   position: fixed;
   top: 0;
@@ -253,14 +253,19 @@ body {
   object-fit: cover;
   object-position: center;
   display: block;
-  opacity: 1;
   transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* Тёмный оверлей поверх фона (вынесен отдельно) */
+/* Скрытый слой */
+.background-layer.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Оверлей */
 .background-overlay {
   position: fixed;
   top: 0;
@@ -272,12 +277,7 @@ body {
   pointer-events: none;
 }
 
-/* Класс для fade-out */
-.background-layer.is-faded {
-  opacity: 0;
-}
-
-/* Скрытие слоёв по ориентации */
+/* Скрытие по ориентации */
 @media (orientation: portrait) {
   .background-layer.is-landscape {
     display: none;
