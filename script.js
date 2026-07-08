@@ -30,8 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoTimeout;
 
   // Два слоя для каждой ориентации
-  // visibleLayer — тот, что сейчас показывается (opacity: 1)
-  // hiddenLayer  — тот, что скрыт (opacity: 0), в него загружаем следующее фото
   let portraitVisible = null;
   let portraitHidden = null;
 
@@ -41,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let portraitIndex = 0;
   let landscapeIndex = 0;
 
-  // Создаём один img элемент
+  // Создаём img элемент
   function createImg(className, src) {
     const img = document.createElement('img');
     img.className = className;
@@ -55,15 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Инициализация слоёв
   function initLayers() {
-    // Портрет: A visible, B hidden
     portraitVisible = createImg('background-layer is-portrait', portraitPhotos[0]);
     portraitHidden = createImg('background-layer is-portrait is-hidden', portraitPhotos[1]);
 
-    // Ландшафт: A visible, B hidden
     landscapeVisible = createImg('background-layer is-landscape', landscapePhotos[0]);
     landscapeHidden = createImg('background-layer is-landscape is-hidden', landscapePhotos[1]);
 
-    // Оверлей
     const overlay = document.createElement('div');
     overlay.className = 'background-overlay';
     overlay.setAttribute('aria-hidden', 'true');
@@ -74,51 +69,52 @@ document.addEventListener('DOMContentLoaded', () => {
     page.prepend(landscapeVisible);
     page.prepend(landscapeHidden);
     page.prepend(overlay);
+
+    // Вешаем обработчики load
+    portraitHidden.addEventListener('load', onPortraitLoad);
+    landscapeHidden.addEventListener('load', onLandscapeLoad);
   }
 
-  // Переключаем слои: hidden становится visible, и наоборот
-  function swapLayers() {
-    const visible = isLandscape ? landscapeVisible : portraitVisible;
-    const hidden = isLandscape ? landscapeHidden : portraitHidden;
-    const photos = isLandscape ? landscapePhotos : portraitPhotos;
-    const currentIndex = isLandscape ? landscapeIndex : portraitIndex;
-    const nextIndex = (currentIndex + 1) % photos.length;
-    const nextSrc = photos[nextIndex];
-
-    // Обновляем индекс
-    if (isLandscape) {
-      landscapeIndex = nextIndex;
-    } else {
-      portraitIndex = nextIndex;
-    }
-
-    // Удаляем старый обработчик load, если есть
-    hidden.removeEventListener('load', onLayerLoad);
-
-    // Загружаем новое фото в скрытый слой
-    hidden.src = nextSrc;
+  // Переключение портретного набора
+  function swapPortrait() {
+    portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
+    portraitHidden.removeEventListener('load', onPortraitLoad);
+    portraitHidden.src = portraitPhotos[portraitIndex];
+    portraitHidden.addEventListener('load', onPortraitLoad);
   }
 
-  // Callback: фото загружено, переключаем opacity
-  function onLayerLoad() {
-    // Удаляем обработчик
-    this.removeEventListener('load', onLayerLoad);
-
-    // Переключаем классы
+  function onPortraitLoad() {
+    this.removeEventListener('load', onPortraitLoad);
     portraitVisible.classList.remove('is-hidden');
     portraitHidden.classList.add('is-hidden');
-    [portraitVisible, portraitHidden] = [portraitHidden, portraitVisible];
-
-    landscapeVisible.classList.remove('is-hidden');
-    landscapeHidden.classList.add('is-hidden');
-    [landscapeVisible, landscapeHidden] = [landscapeHidden, landscapeVisible];
+    const tmp = portraitVisible;
+    portraitVisible = portraitHidden;
+    portraitHidden = tmp;
   }
 
-  // Автоматическая смена
+  // Переключение ландшафтного набора
+  function swapLandscape() {
+    landscapeIndex = (landscapeIndex + 1) % landscapePhotos.length;
+    landscapeHidden.removeEventListener('load', onLandscapeLoad);
+    landscapeHidden.src = landscapePhotos[landscapeIndex];
+    landscapeHidden.addEventListener('load', onLandscapeLoad);
+  }
+
+  function onLandscapeLoad() {
+    this.removeEventListener('load', onLandscapeLoad);
+    landscapeVisible.classList.remove('is-hidden');
+    landscapeHidden.classList.add('is-hidden');
+    const tmp = landscapeVisible;
+    landscapeVisible = landscapeHidden;
+    landscapeHidden = tmp;
+  }
+
+  // Автоматическая смена обоих наборов
   function scheduleNextAuto() {
     clearTimeout(autoTimeout);
     autoTimeout = setTimeout(() => {
-      swapLayers();
+      swapPortrait();
+      swapLandscape();
       scheduleNextAuto();
     }, 4000);
   }
@@ -127,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
     isLandscape = e.matches;
 
-    // Сбрасываем индекс и загружаем первое фото в новый набор
     if (isLandscape) {
       landscapeIndex = 0;
       landscapeVisible.src = landscapePhotos[0];
