@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Смена фото с crossfade
   function changePhoto() {
+    if (!portraitLayerA || !portraitLayerB || !landscapeLayerA || !landscapeLayerB) return;
+
     if (isLandscape) {
       landscapeIndex = (landscapeIndex + 1) % landscapePhotos.length;
       const targetLayer = landscapeSwap ? landscapeLayerA : landscapeLayerB;
@@ -265,8 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Запускаем автоматическую смену фонов каждые 4 секунды
-  scheduleNextAuto();
   // Инициализируем слои
   initLayers();
+  scheduleNextAuto();
 });
 
