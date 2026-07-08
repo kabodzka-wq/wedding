@@ -78,12 +78,24 @@
 }
 
 :root {
-  color-scheme: light;
-  --text: #fdf7f2;
-  --text-strong: #fffaf5;
+  color-scheme: light dark;
+  --bg-page: #f5f0eb;
+  --bg-page-dark: #1a1a1a;
+  --text: #2c2c2c;
+  --text-strong: #1a1a1a;
+  --text-hero: #fffaf5;
+  --text-hero-strong: #ffffff;
   --radius-xl: 36px;
   --radius-lg: 24px;
   --max-width: 1180px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #1a1a1a;
+    --text: #fdf7f2;
+    --text-strong: #fffaf5;
+  }
 }
 
 /* Прелоадер */
@@ -97,7 +109,7 @@
   display: none;
   align-items: center;
   justify-content: center;
-  background: #1a1a1a;
+  background: var(--bg-page);
   opacity: 1;
   transition: opacity 0.6s ease;
 }
@@ -118,8 +130,8 @@
 .preloader__monogram {
   font-family: 'Great Vibes', cursive;
   font-size: clamp(3rem, 8vw, 5rem);
-  color: #f7dce2;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  color: #d4a5a5;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   animation: preloaderPulse 1.8s ease-in-out infinite;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
@@ -135,8 +147,8 @@
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 600;
   letter-spacing: 0.15em;
-  color: #f7dce2;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  color: #d4a5a5;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   animation: preloaderPulse 1.8s ease-in-out infinite;
   opacity: 0;
   -webkit-transform: scale(0.8);
@@ -152,7 +164,7 @@
 
 .preloader__amp {
   font-size: 0.7em;
-  color: rgba(244, 197, 207, 0.7);
+  color: #d4a5a5;
   margin: 0 0.1em;
 }
 
@@ -245,19 +257,23 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   color: var(--text);
   line-height: 1.6;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 4px 24px rgba(0, 0, 0, 0.5);
-  background: #1a1a1a;
+  background: linear-gradient(180deg, var(--bg-page) 0%, #e8e0d8 100%);
+  transition: background 0.3s ease;
 }
 
-/* Фоновые слои с анимацией crossfade */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(180deg, var(--bg-page) 0%, #2a2a2a 100%);
+  }
+}
+
+/* Фоновые слои — внутри hero */
 .background-layer {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  height: 100dvh;
-  z-index: -3;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -346,11 +362,11 @@ a.button {
   justify-content: center;
   padding: 28px;
   background: transparent;
-  color: #f7efe8;
+  color: var(--text-hero);
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .hero__content {
@@ -368,7 +384,7 @@ a.button {
   letter-spacing: 0.34em;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #fff4ef;
+  color: var(--text-hero);
 }
 
 .eyebrow--script {
@@ -395,7 +411,7 @@ a.button {
   font-size: clamp(2.8rem, 7vw, 4.8rem);
   font-weight: 400;
   letter-spacing: 0.06em;
-  color: #fdf5eb;
+  color: var(--text-hero-strong);
 }
 
 .hero h1 .word {
@@ -441,7 +457,7 @@ a.button {
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #fff7f2;
+  color: var(--text-hero);
 }
 
 /* Подсказка пролистать вниз */
@@ -528,9 +544,9 @@ a.button {
 }
 
 .button--ghost {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--bg-page);
+  color: var(--text);
+  border-color: rgba(0, 0, 0, 0.12);
   font-size: 0.9rem;
   padding: 0.7rem 1.2rem;
 }
@@ -548,6 +564,20 @@ a.button {
   border-radius: var(--radius-xl);
   position: relative;
   z-index: 2;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text);
+  }
 }
 
 .section__title {
@@ -562,15 +592,16 @@ a.button {
 .section__lead {
   margin: 0 0 1rem;
   font-size: clamp(1.05rem, 2vw, 1.15rem);
-  color: rgba(255, 250, 245, 0.97);
-  font-weight: 500;
+  color: var(--text);
+  font-weight: 400;
   line-height: 1.6;
 }
 
 .section__copy {
   margin: 0;
   font-size: clamp(1rem, 1.8vw, 1.1rem);
-  color: rgba(255, 250, 245, 0.94);
+  color: var(--text);
+  font-weight: 400;
   line-height: 1.6;
   max-width: 700px;
 }
@@ -586,19 +617,31 @@ a.button {
   padding: 0.8rem 0.5rem 0.6rem;
   border-radius: 16px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 100%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   -webkit-perspective: 200px;
   perspective: 200px;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
 
+@media (prefers-color-scheme: dark) {
+  .countdown__item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text);
+  }
+}
+
 .countdown__value {
   display: block;
   font-size: clamp(1.3rem, 3vw, 1.8rem);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-strong);
   line-height: 1;
   transition: transform 0.4s ease, opacity 0.4s ease, -webkit-transform 0.4s ease;
 }
@@ -660,14 +703,15 @@ a.button {
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text);
   font-weight: 500;
 }
 
 .details-text {
   margin: 0 0 0.5rem;
   font-size: clamp(1rem, 1.8vw, 1.1rem);
-  color: rgba(255, 250, 245, 0.94);
+  color: var(--text);
+  font-weight: 400;
   line-height: 1.6;
 }
 
@@ -754,7 +798,8 @@ a.button {
 .wishes-stack p {
   margin: 0;
   font-size: clamp(1rem, 1.8vw, 1.1rem);
-  color: rgba(255, 250, 245, 0.94);
+  color: var(--text);
+  font-weight: 400;
   line-height: 1.6;
 }
 

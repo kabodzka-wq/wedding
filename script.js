@@ -4,6 +4,15 @@
 //
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Динамический theme-color
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  const updateThemeColor = () => {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    metaTheme.content = isDark ? '#1a1a1a' : '#f5f0eb';
+  };
+  updateThemeColor();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeColor);
+
   const portraitPhotos = [
     'images/photo-1.webp',
     'images/photo-2.webp',
@@ -52,12 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
     landscapeLayerA = createImg('background-layer is-landscape', landscapePhotos[0]);
     landscapeLayerB = createImg('background-layer is-landscape is-faded', landscapePhotos[1]);
 
-    // Добавляем все слои в page
-    const page = document.querySelector('.page');
-    page.prepend(portraitLayerA);
-    page.prepend(portraitLayerB);
-    page.prepend(landscapeLayerA);
-    page.prepend(landscapeLayerB);
+    // Добавляем фоновые слои внутрь hero
+    const hero = document.querySelector('.hero');
+    hero.prepend(portraitLayerA);
+    hero.prepend(portraitLayerB);
+    hero.prepend(landscapeLayerA);
+    hero.prepend(landscapeLayerB);
   }
 
   function changePhoto() {
@@ -107,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autoTimeout = setTimeout(() => {
       changePhoto();
       scheduleNextAuto();
-    }, 4000);
+    }, 2000);
   }
 
   window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
@@ -116,17 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isLandscape) {
       landscapeSwap = false;
       landscapeIndex = 0;
-      landscapeLayerA.src = landscapePhotos[0];
+      landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
       landscapeLayerA.classList.remove('is-faded');
       landscapeLayerB.classList.add('is-faded');
-      landscapeLayerB.src = landscapePhotos[1];
+      landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
     } else {
       portraitSwap = false;
       portraitIndex = 0;
-      portraitLayerA.src = portraitPhotos[0];
+      portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
       portraitLayerA.classList.remove('is-faded');
       portraitLayerB.classList.add('is-faded');
-      portraitLayerB.src = portraitPhotos[1];
+      portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
     }
 
     scheduleNextAuto();
