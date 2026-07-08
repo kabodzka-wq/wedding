@@ -43,34 +43,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Инициализация слоёв
   function initLayers() {
-    // Создаём слои для портрета
-    portraitLayerA = document.createElement('div');
+    // Создаём слои для портрета (теперь <img>)
+    portraitLayerA = document.createElement('img');
     portraitLayerA.className = 'background-layer is-portrait';
-    portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
+    portraitLayerA.src = portraitPhotos[0];
+    portraitLayerA.loading = 'eager';
+    portraitLayerA.decoding = 'async';
+    portraitLayerA.alt = '';
     portraitLayerA.setAttribute('aria-hidden', 'true');
 
-    portraitLayerB = document.createElement('div');
+    portraitLayerB = document.createElement('img');
     portraitLayerB.className = 'background-layer is-portrait is-faded';
-    portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
+    portraitLayerB.src = portraitPhotos[1];
+    portraitLayerB.loading = 'eager';
+    portraitLayerB.decoding = 'async';
+    portraitLayerB.alt = '';
     portraitLayerB.setAttribute('aria-hidden', 'true');
 
     // Создаём слои для ландшафта
-    landscapeLayerA = document.createElement('div');
+    landscapeLayerA = document.createElement('img');
     landscapeLayerA.className = 'background-layer is-landscape';
-    landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
+    landscapeLayerA.src = landscapePhotos[0];
+    landscapeLayerA.loading = 'eager';
+    landscapeLayerA.decoding = 'async';
+    landscapeLayerA.alt = '';
     landscapeLayerA.setAttribute('aria-hidden', 'true');
 
-    landscapeLayerB = document.createElement('div');
+    landscapeLayerB = document.createElement('img');
     landscapeLayerB.className = 'background-layer is-landscape is-faded';
-    landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
+    landscapeLayerB.src = landscapePhotos[1];
+    landscapeLayerB.loading = 'eager';
+    landscapeLayerB.decoding = 'async';
+    landscapeLayerB.alt = '';
     landscapeLayerB.setAttribute('aria-hidden', 'true');
 
-    // Добавляем все слои в page
+    // Оверлей создаём один раз
+    const overlay = document.createElement('div');
+    overlay.className = 'background-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    // Добавляем в page
     const page = document.querySelector('.page');
     page.prepend(portraitLayerA);
     page.prepend(portraitLayerB);
     page.prepend(landscapeLayerA);
     page.prepend(landscapeLayerB);
+    page.prepend(overlay);
   }
 
   // Предзагрузка фото
@@ -96,9 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Предзагружаем фото перед сменой
       preloadPhoto(nextPhoto).then(() => {
-        targetLayer.style.backgroundImage = `url('${nextPhoto}')`;
-        // setTimeout гарантирует, что анимация начнётся в следующем тике,
-        // даже если фото уже в кэше и Promise резолвится мгновенно
+        targetLayer.src = nextPhoto;
         setTimeout(() => {
           targetLayer.classList.remove('is-faded');
           sourceLayer.classList.add('is-faded');
@@ -114,9 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Предзагружаем фото перед сменой
       preloadPhoto(nextPhoto).then(() => {
-        targetLayer.style.backgroundImage = `url('${nextPhoto}')`;
-        // setTimeout гарантирует, что анимация начнётся в следующем тике,
-        // даже если фото уже в кэше и Promise резолвится мгновенно
+        targetLayer.src = nextPhoto;
         setTimeout(() => {
           targetLayer.classList.remove('is-faded');
           sourceLayer.classList.add('is-faded');
@@ -144,19 +158,19 @@ document.addEventListener('DOMContentLoaded', () => {
       landscapeSwap = false;
       landscapeIndex = 0;
       setTimeout(() => {
-        landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
+        landscapeLayerA.src = landscapePhotos[0];
         landscapeLayerA.classList.remove('is-faded');
         landscapeLayerB.classList.add('is-faded');
-        landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
+        landscapeLayerB.src = landscapePhotos[1];
       }, 0);
     } else {
       portraitSwap = false;
       portraitIndex = 0;
       setTimeout(() => {
-        portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
+        portraitLayerA.src = portraitPhotos[0];
         portraitLayerA.classList.remove('is-faded');
         portraitLayerB.classList.add('is-faded');
-        portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
+        portraitLayerB.src = portraitPhotos[1];
       }, 0);
     }
 
