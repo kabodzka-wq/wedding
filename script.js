@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autoTimeout = setTimeout(() => {
       changePhoto();
       scheduleNextAuto();
-    }, 2000);
+    }, 3000);
   }
 
   window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
