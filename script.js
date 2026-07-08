@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Два слоя для crossfade (портрет)
   let portraitLayerA = null;
   let portraitLayerB = null;
-  let portraitActive = 'A'; // какой слой сейчас активен
+  let portraitSwap = false; // false = A visible, B hidden
 
   // Два слоя для crossfade (альбом)
   let landscapeLayerA = null;
   let landscapeLayerB = null;
-  let landscapeActive = 'A';
+  let landscapeSwap = false;
 
   // Инициализация слоёв
   function initLayers() {
@@ -74,44 +74,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Смена фото с crossfade
-  function changePhoto(isLand) {
-    let layerA, layerB, currentIndex, photos;
+  function changePhoto() {
+    if (isLandscape) {
+      landscapeIndex = (landscapeIndex + 1) % landscapePhotos.length;
+      const targetLayer = landscapeSwap ? landscapeLayerA : landscapeLayerB;
+      const sourceLayer = landscapeSwap ? landscapeLayerB : landscapeLayerA;
 
-    if (isLand) {
-      layerA = landscapeLayerA;
-      layerB = landscapeLayerB;
-      currentIndex = landscapeIndex;
-      photos = landscapePhotos;
+      targetLayer.style.backgroundImage = `url('${landscapePhotos[landscapeIndex]}')`;
+      targetLayer.classList.remove('is-faded');
+      sourceLayer.classList.add('is-faded');
+      landscapeSwap = !landscapeSwap;
     } else {
-      layerA = portraitLayerA;
-      layerB = portraitLayerB;
-      currentIndex = portraitIndex;
-      photos = portraitPhotos;
-    }
+      portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
+      const targetLayer = portraitSwap ? portraitLayerA : portraitLayerB;
+      const sourceLayer = portraitSwap ? portraitLayerB : portraitLayerA;
 
-    if (!layerA || !layerB) return;
-
-    const nextIndex = (currentIndex + 1) % photos.length;
-    const nextPhoto = photos[nextIndex];
-
-    // Определяем, какой слой сейчас активен (opacity: 1)
-    const activeLayer = landscapeActive === 'A' ? layerA : layerB;
-    const inactiveLayer = landscapeActive === 'A' ? layerB : layerA;
-
-    // Устанавливаем новое фото на неактивный слой
-    inactiveLayer.style.backgroundImage = `url('${nextPhoto}')`;
-
-    // Меняем местами: inactive становится active
-    inactiveLayer.classList.remove('is-faded');
-    activeLayer.classList.add('is-faded');
-
-    // Обновляем индекс
-    if (isLand) {
-      landscapeIndex = nextIndex;
-      landscapeActive = landscapeActive === 'A' ? 'B' : 'A';
-    } else {
-      portraitIndex = nextIndex;
-      portraitActive = portraitActive === 'A' ? 'B' : 'A';
+      targetLayer.style.backgroundImage = `url('${portraitPhotos[portraitIndex]}')`;
+      targetLayer.classList.remove('is-faded');
+      sourceLayer.classList.add('is-faded');
+      portraitSwap = !portraitSwap;
     }
   }
 
@@ -119,11 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function scheduleNextAuto() {
     clearTimeout(autoTimeout);
     autoTimeout = setTimeout(() => {
-      if (isLandscape) {
-        changePhoto(true);
-      } else {
-        changePhoto(false);
-      }
+      changePhoto();
       scheduleNextAuto();
     }, 4000);
   }
@@ -131,19 +108,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // Обработка смены ориентации
   window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
     isLandscape = e.matches;
+
+    // Сбрасываем swap и индексы
     if (isLandscape) {
+      landscapeSwap = false;
       landscapeIndex = 0;
-      landscapeActive = 'A';
       landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
       landscapeLayerA.classList.remove('is-faded');
       landscapeLayerB.classList.add('is-faded');
+      landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
     } else {
+      portraitSwap = false;
       portraitIndex = 0;
-      portraitActive = 'A';
       portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
       portraitLayerA.classList.remove('is-faded');
       portraitLayerB.classList.add('is-faded');
+      portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
     }
+
+    // Перезапускаем таймер
+    scheduleNextAuto();
   });
 
   // Прелоадер
