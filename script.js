@@ -46,26 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Создаём слои для портрета
     portraitLayerA = document.createElement('div');
     portraitLayerA.className = 'background-layer is-portrait';
-    portraitLayerA.style.transition = 'none';
     portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
     portraitLayerA.setAttribute('aria-hidden', 'true');
 
     portraitLayerB = document.createElement('div');
     portraitLayerB.className = 'background-layer is-portrait is-faded';
-    portraitLayerB.style.transition = 'none';
     portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
     portraitLayerB.setAttribute('aria-hidden', 'true');
 
     // Создаём слои для ландшафта
     landscapeLayerA = document.createElement('div');
     landscapeLayerA.className = 'background-layer is-landscape';
-    landscapeLayerA.style.transition = 'none';
     landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
     landscapeLayerA.setAttribute('aria-hidden', 'true');
 
     landscapeLayerB = document.createElement('div');
     landscapeLayerB.className = 'background-layer is-landscape is-faded';
-    landscapeLayerB.style.transition = 'none';
     landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
     landscapeLayerB.setAttribute('aria-hidden', 'true');
 
@@ -75,14 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     page.prepend(portraitLayerB);
     page.prepend(landscapeLayerA);
     page.prepend(landscapeLayerB);
-
-    // Включаем transition после вставки в DOM
-    requestAnimationFrame(() => {
-      portraitLayerA.style.transition = '';
-      portraitLayerB.style.transition = '';
-      landscapeLayerA.style.transition = '';
-      landscapeLayerB.style.transition = '';
-    });
   }
 
   // Предзагрузка фото
@@ -108,19 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Предзагружаем фото перед сменой
       preloadPhoto(nextPhoto).then(() => {
-        // Отключаем transition перед установкой нового фона
-        targetLayer.style.transition = 'none';
         targetLayer.style.backgroundImage = `url('${nextPhoto}')`;
-        // Форсируем пересчёт стилей
-        targetLayer.offsetHeight;
-        // Включаем transition обратно
-        targetLayer.style.transition = '';
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            targetLayer.classList.remove('is-faded');
-            sourceLayer.classList.add('is-faded');
-          });
-        });
+        // setTimeout гарантирует, что анимация начнётся в следующем тике,
+        // даже если фото уже в кэше и Promise резолвится мгновенно
+        setTimeout(() => {
+          targetLayer.classList.remove('is-faded');
+          sourceLayer.classList.add('is-faded');
+        }, 0);
         landscapeSwap = !landscapeSwap;
       });
     } else {
@@ -132,19 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Предзагружаем фото перед сменой
       preloadPhoto(nextPhoto).then(() => {
-        // Отключаем transition перед установкой нового фона
-        targetLayer.style.transition = 'none';
         targetLayer.style.backgroundImage = `url('${nextPhoto}')`;
-        // Форсируем пересчёт стилей
-        targetLayer.offsetHeight;
-        // Включаем transition обратно
-        targetLayer.style.transition = '';
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            targetLayer.classList.remove('is-faded');
-            sourceLayer.classList.add('is-faded');
-          });
-        });
+        // setTimeout гарантирует, что анимация начнётся в следующем тике,
+        // даже если фото уже в кэше и Promise резолвится мгновенно
+        setTimeout(() => {
+          targetLayer.classList.remove('is-faded');
+          sourceLayer.classList.add('is-faded');
+        }, 0);
         portraitSwap = !portraitSwap;
       });
     }
@@ -167,33 +143,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isLandscape) {
       landscapeSwap = false;
       landscapeIndex = 0;
-      requestAnimationFrame(() => {
-        landscapeLayerA.style.transition = 'none';
+      setTimeout(() => {
         landscapeLayerA.style.backgroundImage = `url('${landscapePhotos[0]}')`;
-        landscapeLayerA.offsetHeight;
-        landscapeLayerA.style.transition = '';
         landscapeLayerA.classList.remove('is-faded');
         landscapeLayerB.classList.add('is-faded');
-        landscapeLayerB.style.transition = 'none';
         landscapeLayerB.style.backgroundImage = `url('${landscapePhotos[1]}')`;
-        landscapeLayerB.offsetHeight;
-        landscapeLayerB.style.transition = '';
-      });
+      }, 0);
     } else {
       portraitSwap = false;
       portraitIndex = 0;
-      requestAnimationFrame(() => {
-        portraitLayerA.style.transition = 'none';
+      setTimeout(() => {
         portraitLayerA.style.backgroundImage = `url('${portraitPhotos[0]}')`;
-        portraitLayerA.offsetHeight;
-        portraitLayerA.style.transition = '';
         portraitLayerA.classList.remove('is-faded');
         portraitLayerB.classList.add('is-faded');
-        portraitLayerB.style.transition = 'none';
         portraitLayerB.style.backgroundImage = `url('${portraitPhotos[1]}')`;
-        portraitLayerB.offsetHeight;
-        portraitLayerB.style.transition = '';
-      });
+      }, 0);
     }
 
     // Перезапускаем таймер
