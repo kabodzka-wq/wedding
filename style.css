@@ -98,14 +98,21 @@
   align-items: center;
   justify-content: center;
   background: #1a1a1a;
+  opacity: 1;
+  transition: opacity 0.6s ease;
 }
 
 .preloader.is-visible {
   display: flex;
 }
 
+.preloader.is-hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .preloader.is-hidden {
-  display: none;
+  display: none !important;
 }
 
 .preloader__monogram {

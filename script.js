@@ -68,18 +68,36 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetLayer = landscapeSwap ? landscapeLayerA : landscapeLayerB;
       const sourceLayer = landscapeSwap ? landscapeLayerB : landscapeLayerA;
 
-      targetLayer.style.backgroundImage = `url('${landscapePhotos[landscapeIndex]}')`;
-      targetLayer.classList.remove('is-faded');
-      sourceLayer.classList.add('is-faded');
+      // Preload image for iOS Safari
+      const img = new Image();
+      img.src = landscapePhotos[landscapeIndex];
+      
+      img.onload = () => {
+        targetLayer.style.backgroundImage = `url('${landscapePhotos[landscapeIndex]}')`;
+        // Force reflow for iOS Safari
+        targetLayer.offsetHeight;
+        targetLayer.classList.remove('is-faded');
+        sourceLayer.classList.add('is-faded');
+      };
+      
       landscapeSwap = !landscapeSwap;
     } else {
       portraitIndex = (portraitIndex + 1) % portraitPhotos.length;
       const targetLayer = portraitSwap ? portraitLayerA : portraitLayerB;
       const sourceLayer = portraitSwap ? portraitLayerB : portraitLayerA;
 
-      targetLayer.style.backgroundImage = `url('${portraitPhotos[portraitIndex]}')`;
-      targetLayer.classList.remove('is-faded');
-      sourceLayer.classList.add('is-faded');
+      // Preload image for iOS Safari
+      const img = new Image();
+      img.src = portraitPhotos[portraitIndex];
+      
+      img.onload = () => {
+        targetLayer.style.backgroundImage = `url('${portraitPhotos[portraitIndex]}')`;
+        // Force reflow for iOS Safari
+        targetLayer.offsetHeight;
+        targetLayer.classList.remove('is-faded');
+        sourceLayer.classList.add('is-faded');
+      };
+      
       portraitSwap = !portraitSwap;
     }
   }
@@ -133,8 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1200);
     }
     const hidePreloader = () => {
-      preloader.classList.remove('is-visible');
-      preloader.classList.add('is-hidden');
+      preloader.classList.add('is-hiding');
+      setTimeout(() => {
+        preloader.classList.remove('is-visible', 'is-hiding');
+        preloader.classList.add('is-hidden');
+      }, 600);
     };
     window.addEventListener('load', () => {
       setTimeout(hidePreloader, 500);
