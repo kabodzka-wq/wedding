@@ -81,12 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
     portraitHidden.removeEventListener('load', onPortraitLoad);
     portraitHidden.src = portraitPhotos[portraitIndex];
     portraitHidden.addEventListener('load', onPortraitLoad);
+    // Если фото уже в кэше, load мог сработать до добавления обработчика
+    if (portraitHidden.complete) {
+      portraitHidden.dispatchEvent(new Event('load'));
+    }
   }
 
   function onPortraitLoad() {
     this.removeEventListener('load', onPortraitLoad);
-    portraitVisible.classList.remove('is-hidden');
-    portraitHidden.classList.add('is-hidden');
+    // Текущий видимый становится скрытым, скрытый — видимым
+    portraitVisible.classList.add('is-hidden');
+    portraitHidden.classList.remove('is-hidden');
     const tmp = portraitVisible;
     portraitVisible = portraitHidden;
     portraitHidden = tmp;
@@ -98,12 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
     landscapeHidden.removeEventListener('load', onLandscapeLoad);
     landscapeHidden.src = landscapePhotos[landscapeIndex];
     landscapeHidden.addEventListener('load', onLandscapeLoad);
+    if (landscapeHidden.complete) {
+      landscapeHidden.dispatchEvent(new Event('load'));
+    }
   }
 
   function onLandscapeLoad() {
     this.removeEventListener('load', onLandscapeLoad);
-    landscapeVisible.classList.remove('is-hidden');
-    landscapeHidden.classList.add('is-hidden');
+    landscapeVisible.classList.add('is-hidden');
+    landscapeHidden.classList.remove('is-hidden');
     const tmp = landscapeVisible;
     landscapeVisible = landscapeHidden;
     landscapeHidden = tmp;
