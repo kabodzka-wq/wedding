@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           targetLayer.classList.remove('is-faded');
           sourceLayer.classList.add('is-faded');
-        }, 0);
+        }, 50);
         landscapeSwap = !landscapeSwap;
       });
     } else {
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           targetLayer.classList.remove('is-faded');
           sourceLayer.classList.add('is-faded');
-        }, 0);
+        }, 50);
         portraitSwap = !portraitSwap;
       });
     }
@@ -159,18 +159,22 @@ document.addEventListener('DOMContentLoaded', () => {
       landscapeIndex = 0;
       setTimeout(() => {
         landscapeLayerA.src = landscapePhotos[0];
-        landscapeLayerA.classList.remove('is-faded');
-        landscapeLayerB.classList.add('is-faded');
-        landscapeLayerB.src = landscapePhotos[1];
+        setTimeout(() => {
+          landscapeLayerA.classList.remove('is-faded');
+          landscapeLayerB.classList.add('is-faded');
+          landscapeLayerB.src = landscapePhotos[1];
+        }, 50);
       }, 0);
     } else {
       portraitSwap = false;
       portraitIndex = 0;
       setTimeout(() => {
         portraitLayerA.src = portraitPhotos[0];
-        portraitLayerA.classList.remove('is-faded');
-        portraitLayerB.classList.add('is-faded');
-        portraitLayerB.src = portraitPhotos[1];
+        setTimeout(() => {
+          portraitLayerA.classList.remove('is-faded');
+          portraitLayerB.classList.add('is-faded');
+          portraitLayerB.src = portraitPhotos[1];
+        }, 50);
       }, 0);
     }
 
